@@ -1,0 +1,2 @@
+waypoint_navigation
+-DCATKIN_DEVEL_PREFIX=/home/mpperret/project_ws/devel -DCMAKE_INSTALL_PREFIX=/home/mpperret/project_ws/install -G Unix Makefiles

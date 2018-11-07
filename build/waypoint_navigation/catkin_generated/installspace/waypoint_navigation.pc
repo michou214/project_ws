@@ -1,0 +1,8 @@
+prefix=/home/mpperret/project_ws/install
+
+Name: waypoint_navigation
+Description: Description of waypoint_navigation
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/mpperret/project_ws/install/lib 
+Requires: message_runtime
