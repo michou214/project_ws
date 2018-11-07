@@ -56,50 +56,6 @@ CMAKE_BINARY_DIR = /home/mpperret/project_ws/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: install/local
-
-.PHONY : install/local/fast
-
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: install/strip
-
-.PHONY : install/strip/fast
-
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
@@ -112,16 +68,6 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
-
 # Special rule for the target test
 test:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
@@ -132,6 +78,60 @@ test:
 test/fast: test
 
 .PHONY : test/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: install/local
+
+.PHONY : install/local/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: install/strip
+
+.PHONY : install/strip/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -181,6 +181,21 @@ waypoint_navigation_genpy/fast:
 .PHONY : waypoint_navigation_genpy/fast
 
 # Convenience name for target.
+waypoint_navigation/CMakeFiles/waypoint_navigation_gennodejs.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_gennodejs.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_gennodejs.dir/rule
+
+# Convenience name for target.
+waypoint_navigation_gennodejs: waypoint_navigation/CMakeFiles/waypoint_navigation_gennodejs.dir/rule
+
+.PHONY : waypoint_navigation_gennodejs
+
+# fast build rule for target.
+waypoint_navigation_gennodejs/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_gennodejs.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_gennodejs.dir/build
+.PHONY : waypoint_navigation_gennodejs/fast
+
+# Convenience name for target.
 waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_nodejs.dir/rule:
 	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_nodejs.dir/rule
 .PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_nodejs.dir/rule
@@ -194,186 +209,6 @@ waypoint_navigation_generate_messages_nodejs: waypoint_navigation/CMakeFiles/way
 waypoint_navigation_generate_messages_nodejs/fast:
 	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_nodejs.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_nodejs.dir/build
 .PHONY : waypoint_navigation_generate_messages_nodejs/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_nodejs.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-mavros_msgs_generate_messages_nodejs: waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : mavros_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-mavros_msgs_generate_messages_nodejs/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_nodejs.dir/build.make waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_nodejs.dir/build
-.PHONY : mavros_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_lisp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_lisp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-geographic_msgs_generate_messages_lisp: waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : geographic_msgs_generate_messages_lisp
-
-# fast build rule for target.
-geographic_msgs_generate_messages_lisp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_lisp.dir/build.make waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_lisp.dir/build
-.PHONY : geographic_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages.dir/rule
-
-# Convenience name for target.
-waypoint_navigation_generate_messages: waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages.dir/rule
-
-.PHONY : waypoint_navigation_generate_messages
-
-# fast build rule for target.
-waypoint_navigation_generate_messages/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages.dir/build
-.PHONY : waypoint_navigation_generate_messages/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_py.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_py.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-mavros_msgs_generate_messages_py: waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_py.dir/rule
-
-.PHONY : mavros_msgs_generate_messages_py
-
-# fast build rule for target.
-mavros_msgs_generate_messages_py/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_py.dir/build.make waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_py.dir/build
-.PHONY : mavros_msgs_generate_messages_py/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_nodejs: waypoint_navigation/CMakeFiles/roscpp_generate_messages_nodejs.dir/rule
-
-.PHONY : roscpp_generate_messages_nodejs
-
-# fast build rule for target.
-roscpp_generate_messages_nodejs/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/roscpp_generate_messages_nodejs.dir/build.make waypoint_navigation/CMakeFiles/roscpp_generate_messages_nodejs.dir/build
-.PHONY : roscpp_generate_messages_nodejs/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_lisp: waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_lisp
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_lisp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build.make waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/build
-.PHONY : rosgraph_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_py: waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_py
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_py/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build.make waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/build
-.PHONY : rosgraph_msgs_generate_messages_py/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_eus.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_eus.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-mavros_msgs_generate_messages_eus: waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_eus.dir/rule
-
-.PHONY : mavros_msgs_generate_messages_eus
-
-# fast build rule for target.
-mavros_msgs_generate_messages_eus/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_eus.dir/build.make waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_eus.dir/build
-.PHONY : mavros_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_lisp: waypoint_navigation/CMakeFiles/std_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : std_msgs_generate_messages_lisp
-
-# fast build rule for target.
-std_msgs_generate_messages_lisp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make waypoint_navigation/CMakeFiles/std_msgs_generate_messages_lisp.dir/build
-.PHONY : std_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-geometry_msgs_generate_messages_lisp: waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : geometry_msgs_generate_messages_lisp
-
-# fast build rule for target.
-geometry_msgs_generate_messages_lisp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build.make waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/build
-.PHONY : geometry_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/std_msgs_generate_messages_eus.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_eus: waypoint_navigation/CMakeFiles/std_msgs_generate_messages_eus.dir/rule
-
-.PHONY : std_msgs_generate_messages_eus
-
-# fast build rule for target.
-std_msgs_generate_messages_eus/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/std_msgs_generate_messages_eus.dir/build.make waypoint_navigation/CMakeFiles/std_msgs_generate_messages_eus.dir/build
-.PHONY : std_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_py.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_py.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-geographic_msgs_generate_messages_py: waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_py.dir/rule
-
-.PHONY : geographic_msgs_generate_messages_py
-
-# fast build rule for target.
-geographic_msgs_generate_messages_py/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_py.dir/build.make waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_py.dir/build
-.PHONY : geographic_msgs_generate_messages_py/fast
 
 # Convenience name for target.
 waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_cpp.dir/rule:
@@ -391,184 +226,19 @@ geographic_msgs_generate_messages_cpp/fast:
 .PHONY : geographic_msgs_generate_messages_cpp/fast
 
 # Convenience name for target.
-waypoint_navigation/CMakeFiles/roscpp_generate_messages_eus.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/roscpp_generate_messages_eus.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/roscpp_generate_messages_eus.dir/rule
+waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_eus.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_eus.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_eus.dir/rule
 
 # Convenience name for target.
-roscpp_generate_messages_eus: waypoint_navigation/CMakeFiles/roscpp_generate_messages_eus.dir/rule
+geographic_msgs_generate_messages_eus: waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_eus.dir/rule
 
-.PHONY : roscpp_generate_messages_eus
+.PHONY : geographic_msgs_generate_messages_eus
 
 # fast build rule for target.
-roscpp_generate_messages_eus/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/roscpp_generate_messages_eus.dir/build.make waypoint_navigation/CMakeFiles/roscpp_generate_messages_eus.dir/build
-.PHONY : roscpp_generate_messages_eus/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_py.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_py.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_py.dir/rule
-
-# Convenience name for target.
-waypoint_navigation_generate_messages_py: waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_py.dir/rule
-
-.PHONY : waypoint_navigation_generate_messages_py
-
-# fast build rule for target.
-waypoint_navigation_generate_messages_py/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_py.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_py.dir/build
-.PHONY : waypoint_navigation_generate_messages_py/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-geometry_msgs_generate_messages_cpp: waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : geometry_msgs_generate_messages_cpp
-
-# fast build rule for target.
-geometry_msgs_generate_messages_cpp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build.make waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build
-.PHONY : geometry_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-sensor_msgs_generate_messages_nodejs: waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : sensor_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-sensor_msgs_generate_messages_nodejs/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build.make waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build
-.PHONY : sensor_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_eus.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_eus.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-waypoint_navigation_generate_messages_eus: waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_eus.dir/rule
-
-.PHONY : waypoint_navigation_generate_messages_eus
-
-# fast build rule for target.
-waypoint_navigation_generate_messages_eus/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_eus.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_eus.dir/build
-.PHONY : waypoint_navigation_generate_messages_eus/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_cpp: waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_cpp
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_cpp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build.make waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/build
-.PHONY : rosgraph_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/roscpp_generate_messages_cpp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_cpp: waypoint_navigation/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
-
-.PHONY : roscpp_generate_messages_cpp
-
-# fast build rule for target.
-roscpp_generate_messages_cpp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make waypoint_navigation/CMakeFiles/roscpp_generate_messages_cpp.dir/build
-.PHONY : roscpp_generate_messages_cpp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-geometry_msgs_generate_messages_eus: waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
-
-.PHONY : geometry_msgs_generate_messages_eus
-
-# fast build rule for target.
-geometry_msgs_generate_messages_eus/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build.make waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build
-.PHONY : geometry_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_nodejs: waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_nodejs/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
-.PHONY : rosgraph_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_eus: waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_eus
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_eus/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make waypoint_navigation/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
-.PHONY : rosgraph_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/roscpp_generate_messages_py.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/roscpp_generate_messages_py.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/roscpp_generate_messages_py.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_py: waypoint_navigation/CMakeFiles/roscpp_generate_messages_py.dir/rule
-
-.PHONY : roscpp_generate_messages_py
-
-# fast build rule for target.
-roscpp_generate_messages_py/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/roscpp_generate_messages_py.dir/build.make waypoint_navigation/CMakeFiles/roscpp_generate_messages_py.dir/build
-.PHONY : roscpp_generate_messages_py/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_cpp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_cpp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-mavros_msgs_generate_messages_cpp: waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : mavros_msgs_generate_messages_cpp
-
-# fast build rule for target.
-mavros_msgs_generate_messages_cpp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_cpp.dir/build.make waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_cpp.dir/build
-.PHONY : mavros_msgs_generate_messages_cpp/fast
+geographic_msgs_generate_messages_eus/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_eus.dir/build.make waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_eus.dir/build
+.PHONY : geographic_msgs_generate_messages_eus/fast
 
 # Convenience name for target.
 waypoint_navigation/CMakeFiles/offb_node.dir/rule:
@@ -586,259 +256,19 @@ offb_node/fast:
 .PHONY : offb_node/fast
 
 # Convenience name for target.
-waypoint_navigation/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
+waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_cpp.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_cpp.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_cpp.dir/rule
 
 # Convenience name for target.
-std_msgs_generate_messages_cpp: waypoint_navigation/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
+mavros_msgs_generate_messages_cpp: waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_cpp.dir/rule
 
-.PHONY : std_msgs_generate_messages_cpp
+.PHONY : mavros_msgs_generate_messages_cpp
 
 # fast build rule for target.
-std_msgs_generate_messages_cpp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make waypoint_navigation/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
-.PHONY : std_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-sensor_msgs_generate_messages_eus: waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule
-
-.PHONY : sensor_msgs_generate_messages_eus
-
-# fast build rule for target.
-sensor_msgs_generate_messages_eus/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build.make waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build
-.PHONY : sensor_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/std_msgs_generate_messages_py.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/std_msgs_generate_messages_py.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/std_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_py: waypoint_navigation/CMakeFiles/std_msgs_generate_messages_py.dir/rule
-
-.PHONY : std_msgs_generate_messages_py
-
-# fast build rule for target.
-std_msgs_generate_messages_py/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/std_msgs_generate_messages_py.dir/build.make waypoint_navigation/CMakeFiles/std_msgs_generate_messages_py.dir/build
-.PHONY : std_msgs_generate_messages_py/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-geometry_msgs_generate_messages_nodejs: waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : geometry_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-geometry_msgs_generate_messages_nodejs/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build.make waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build
-.PHONY : geometry_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-uuid_msgs_generate_messages_nodejs: waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : uuid_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-uuid_msgs_generate_messages_nodejs/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/build.make waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/build
-.PHONY : uuid_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_nodejs: waypoint_navigation/CMakeFiles/std_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : std_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-std_msgs_generate_messages_nodejs/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build.make waypoint_navigation/CMakeFiles/std_msgs_generate_messages_nodejs.dir/build
-.PHONY : std_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-geometry_msgs_generate_messages_py: waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_py.dir/rule
-
-.PHONY : geometry_msgs_generate_messages_py
-
-# fast build rule for target.
-geometry_msgs_generate_messages_py/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_py.dir/build.make waypoint_navigation/CMakeFiles/geometry_msgs_generate_messages_py.dir/build
-.PHONY : geometry_msgs_generate_messages_py/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-sensor_msgs_generate_messages_cpp: waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : sensor_msgs_generate_messages_cpp
-
-# fast build rule for target.
-sensor_msgs_generate_messages_cpp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build.make waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build
-.PHONY : sensor_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/waypoint_navigation_genlisp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_genlisp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_genlisp.dir/rule
-
-# Convenience name for target.
-waypoint_navigation_genlisp: waypoint_navigation/CMakeFiles/waypoint_navigation_genlisp.dir/rule
-
-.PHONY : waypoint_navigation_genlisp
-
-# fast build rule for target.
-waypoint_navigation_genlisp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_genlisp.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_genlisp.dir/build
-.PHONY : waypoint_navigation_genlisp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_lisp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_lisp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-mavros_msgs_generate_messages_lisp: waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : mavros_msgs_generate_messages_lisp
-
-# fast build rule for target.
-mavros_msgs_generate_messages_lisp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_lisp.dir/build.make waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_lisp.dir/build
-.PHONY : mavros_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-sensor_msgs_generate_messages_lisp: waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : sensor_msgs_generate_messages_lisp
-
-# fast build rule for target.
-sensor_msgs_generate_messages_lisp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build.make waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/build
-.PHONY : sensor_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/waypoint_navigation_gennodejs.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_gennodejs.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_gennodejs.dir/rule
-
-# Convenience name for target.
-waypoint_navigation_gennodejs: waypoint_navigation/CMakeFiles/waypoint_navigation_gennodejs.dir/rule
-
-.PHONY : waypoint_navigation_gennodejs
-
-# fast build rule for target.
-waypoint_navigation_gennodejs/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_gennodejs.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_gennodejs.dir/build
-.PHONY : waypoint_navigation_gennodejs/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_py.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_py.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-sensor_msgs_generate_messages_py: waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_py.dir/rule
-
-.PHONY : sensor_msgs_generate_messages_py
-
-# fast build rule for target.
-sensor_msgs_generate_messages_py/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_py.dir/build.make waypoint_navigation/CMakeFiles/sensor_msgs_generate_messages_py.dir/build
-.PHONY : sensor_msgs_generate_messages_py/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_eus.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_eus.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-geographic_msgs_generate_messages_eus: waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_eus.dir/rule
-
-.PHONY : geographic_msgs_generate_messages_eus
-
-# fast build rule for target.
-geographic_msgs_generate_messages_eus/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_eus.dir/build.make waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_eus.dir/build
-.PHONY : geographic_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_nodejs.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-geographic_msgs_generate_messages_nodejs: waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : geographic_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-geographic_msgs_generate_messages_nodejs/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_nodejs.dir/build.make waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_nodejs.dir/build
-.PHONY : geographic_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_cpp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_cpp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-uuid_msgs_generate_messages_cpp: waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : uuid_msgs_generate_messages_cpp
-
-# fast build rule for target.
-uuid_msgs_generate_messages_cpp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_cpp.dir/build.make waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_cpp.dir/build
-.PHONY : uuid_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_eus.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_eus.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-uuid_msgs_generate_messages_eus: waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_eus.dir/rule
-
-.PHONY : uuid_msgs_generate_messages_eus
-
-# fast build rule for target.
-uuid_msgs_generate_messages_eus/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_eus.dir/build.make waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_eus.dir/build
-.PHONY : uuid_msgs_generate_messages_eus/fast
+mavros_msgs_generate_messages_cpp/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_cpp.dir/build.make waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_cpp.dir/build
+.PHONY : mavros_msgs_generate_messages_cpp/fast
 
 # Convenience name for target.
 waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_lisp.dir/rule:
@@ -871,6 +301,81 @@ waypoint_navigation_generate_messages_lisp/fast:
 .PHONY : waypoint_navigation_generate_messages_lisp/fast
 
 # Convenience name for target.
+waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_nodejs.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+geographic_msgs_generate_messages_nodejs: waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : geographic_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+geographic_msgs_generate_messages_nodejs/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_nodejs.dir/build.make waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_nodejs.dir/build
+.PHONY : geographic_msgs_generate_messages_nodejs/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_lisp.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_lisp.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_lisp.dir/rule
+
+# Convenience name for target.
+mavros_msgs_generate_messages_lisp: waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_lisp.dir/rule
+
+.PHONY : mavros_msgs_generate_messages_lisp
+
+# fast build rule for target.
+mavros_msgs_generate_messages_lisp/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_lisp.dir/build.make waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_lisp.dir/build
+.PHONY : mavros_msgs_generate_messages_lisp/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/waypoint_navigation_genlisp.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_genlisp.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_genlisp.dir/rule
+
+# Convenience name for target.
+waypoint_navigation_genlisp: waypoint_navigation/CMakeFiles/waypoint_navigation_genlisp.dir/rule
+
+.PHONY : waypoint_navigation_genlisp
+
+# fast build rule for target.
+waypoint_navigation_genlisp/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_genlisp.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_genlisp.dir/build
+.PHONY : waypoint_navigation_genlisp/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_eus.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_eus.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+mavros_msgs_generate_messages_eus: waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_eus.dir/rule
+
+.PHONY : mavros_msgs_generate_messages_eus
+
+# fast build rule for target.
+mavros_msgs_generate_messages_eus/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_eus.dir/build.make waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_eus.dir/build
+.PHONY : mavros_msgs_generate_messages_eus/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+uuid_msgs_generate_messages_nodejs: waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : uuid_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+uuid_msgs_generate_messages_nodejs/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/build.make waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_nodejs.dir/build
+.PHONY : uuid_msgs_generate_messages_nodejs/fast
+
+# Convenience name for target.
 waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_py.dir/rule:
 	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_py.dir/rule
 .PHONY : waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_py.dir/rule
@@ -884,6 +389,156 @@ uuid_msgs_generate_messages_py: waypoint_navigation/CMakeFiles/uuid_msgs_generat
 uuid_msgs_generate_messages_py/fast:
 	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_py.dir/build.make waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_py.dir/build
 .PHONY : uuid_msgs_generate_messages_py/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_py.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_py.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_py.dir/rule
+
+# Convenience name for target.
+geographic_msgs_generate_messages_py: waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_py.dir/rule
+
+.PHONY : geographic_msgs_generate_messages_py
+
+# fast build rule for target.
+geographic_msgs_generate_messages_py/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_py.dir/build.make waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_py.dir/build
+.PHONY : geographic_msgs_generate_messages_py/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_py.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_py.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_py.dir/rule
+
+# Convenience name for target.
+waypoint_navigation_generate_messages_py: waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_py.dir/rule
+
+.PHONY : waypoint_navigation_generate_messages_py
+
+# fast build rule for target.
+waypoint_navigation_generate_messages_py/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_py.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_py.dir/build
+.PHONY : waypoint_navigation_generate_messages_py/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_py.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_py.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_py.dir/rule
+
+# Convenience name for target.
+mavros_msgs_generate_messages_py: waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_py.dir/rule
+
+.PHONY : mavros_msgs_generate_messages_py
+
+# fast build rule for target.
+mavros_msgs_generate_messages_py/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_py.dir/build.make waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_py.dir/build
+.PHONY : mavros_msgs_generate_messages_py/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_cpp.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_cpp.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+uuid_msgs_generate_messages_cpp: waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_cpp.dir/rule
+
+.PHONY : uuid_msgs_generate_messages_cpp
+
+# fast build rule for target.
+uuid_msgs_generate_messages_cpp/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_cpp.dir/build.make waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_cpp.dir/build
+.PHONY : uuid_msgs_generate_messages_cpp/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_eus.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_eus.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+waypoint_navigation_generate_messages_eus: waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_eus.dir/rule
+
+.PHONY : waypoint_navigation_generate_messages_eus
+
+# fast build rule for target.
+waypoint_navigation_generate_messages_eus/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_eus.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_eus.dir/build
+.PHONY : waypoint_navigation_generate_messages_eus/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_eus.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_eus.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+uuid_msgs_generate_messages_eus: waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_eus.dir/rule
+
+.PHONY : uuid_msgs_generate_messages_eus
+
+# fast build rule for target.
+uuid_msgs_generate_messages_eus/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_eus.dir/build.make waypoint_navigation/CMakeFiles/uuid_msgs_generate_messages_eus.dir/build
+.PHONY : uuid_msgs_generate_messages_eus/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/waypoint_navigation_geneus.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_geneus.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_geneus.dir/rule
+
+# Convenience name for target.
+waypoint_navigation_geneus: waypoint_navigation/CMakeFiles/waypoint_navigation_geneus.dir/rule
+
+.PHONY : waypoint_navigation_geneus
+
+# fast build rule for target.
+waypoint_navigation_geneus/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_geneus.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_geneus.dir/build
+.PHONY : waypoint_navigation_geneus/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_lisp.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_lisp.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_lisp.dir/rule
+
+# Convenience name for target.
+geographic_msgs_generate_messages_lisp: waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_lisp.dir/rule
+
+.PHONY : geographic_msgs_generate_messages_lisp
+
+# fast build rule for target.
+geographic_msgs_generate_messages_lisp/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_lisp.dir/build.make waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_lisp.dir/build
+.PHONY : geographic_msgs_generate_messages_lisp/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_nodejs.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+mavros_msgs_generate_messages_nodejs: waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : mavros_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+mavros_msgs_generate_messages_nodejs/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_nodejs.dir/build.make waypoint_navigation/CMakeFiles/mavros_msgs_generate_messages_nodejs.dir/build
+.PHONY : mavros_msgs_generate_messages_nodejs/fast
+
+# Convenience name for target.
+waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages.dir/rule:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages.dir/rule
+.PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages.dir/rule
+
+# Convenience name for target.
+waypoint_navigation_generate_messages: waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages.dir/rule
+
+.PHONY : waypoint_navigation_generate_messages
+
+# fast build rule for target.
+waypoint_navigation_generate_messages/fast:
+	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages.dir/build
+.PHONY : waypoint_navigation_generate_messages/fast
 
 # Convenience name for target.
 waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_cpp.dir/rule:
@@ -901,21 +556,6 @@ waypoint_navigation_generate_messages_cpp/fast:
 .PHONY : waypoint_navigation_generate_messages_cpp/fast
 
 # Convenience name for target.
-waypoint_navigation/CMakeFiles/roscpp_generate_messages_lisp.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_lisp: waypoint_navigation/CMakeFiles/roscpp_generate_messages_lisp.dir/rule
-
-.PHONY : roscpp_generate_messages_lisp
-
-# fast build rule for target.
-roscpp_generate_messages_lisp/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/roscpp_generate_messages_lisp.dir/build.make waypoint_navigation/CMakeFiles/roscpp_generate_messages_lisp.dir/build
-.PHONY : roscpp_generate_messages_lisp/fast
-
-# Convenience name for target.
 waypoint_navigation/CMakeFiles/waypoint_navigation_gencpp.dir/rule:
 	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_gencpp.dir/rule
 .PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_gencpp.dir/rule
@@ -929,21 +569,6 @@ waypoint_navigation_gencpp: waypoint_navigation/CMakeFiles/waypoint_navigation_g
 waypoint_navigation_gencpp/fast:
 	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_gencpp.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_gencpp.dir/build
 .PHONY : waypoint_navigation_gencpp/fast
-
-# Convenience name for target.
-waypoint_navigation/CMakeFiles/waypoint_navigation_geneus.dir/rule:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/waypoint_navigation_geneus.dir/rule
-.PHONY : waypoint_navigation/CMakeFiles/waypoint_navigation_geneus.dir/rule
-
-# Convenience name for target.
-waypoint_navigation_geneus: waypoint_navigation/CMakeFiles/waypoint_navigation_geneus.dir/rule
-
-.PHONY : waypoint_navigation_geneus
-
-# fast build rule for target.
-waypoint_navigation_geneus/fast:
-	cd /home/mpperret/project_ws/build && $(MAKE) -f waypoint_navigation/CMakeFiles/waypoint_navigation_geneus.dir/build.make waypoint_navigation/CMakeFiles/waypoint_navigation_geneus.dir/build
-.PHONY : waypoint_navigation_geneus/fast
 
 src/offb_node.o: src/offb_node.cpp.o
 
@@ -978,65 +603,40 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... rebuild_cache"
-	@echo "... edit_cache"
-	@echo "... install/local"
-	@echo "... install/strip"
-	@echo "... waypoint_navigation_genpy"
-	@echo "... waypoint_navigation_generate_messages_nodejs"
-	@echo "... mavros_msgs_generate_messages_nodejs"
-	@echo "... geographic_msgs_generate_messages_lisp"
-	@echo "... waypoint_navigation_generate_messages"
-	@echo "... mavros_msgs_generate_messages_py"
-	@echo "... roscpp_generate_messages_nodejs"
-	@echo "... rosgraph_msgs_generate_messages_lisp"
-	@echo "... rosgraph_msgs_generate_messages_py"
-	@echo "... mavros_msgs_generate_messages_eus"
 	@echo "... install"
-	@echo "... std_msgs_generate_messages_lisp"
-	@echo "... geometry_msgs_generate_messages_lisp"
-	@echo "... std_msgs_generate_messages_eus"
-	@echo "... geographic_msgs_generate_messages_py"
-	@echo "... geographic_msgs_generate_messages_cpp"
-	@echo "... list_install_components"
-	@echo "... roscpp_generate_messages_eus"
 	@echo "... test"
-	@echo "... waypoint_navigation_generate_messages_py"
-	@echo "... geometry_msgs_generate_messages_cpp"
-	@echo "... sensor_msgs_generate_messages_nodejs"
-	@echo "... waypoint_navigation_generate_messages_eus"
-	@echo "... rosgraph_msgs_generate_messages_cpp"
-	@echo "... roscpp_generate_messages_cpp"
-	@echo "... geometry_msgs_generate_messages_eus"
-	@echo "... rosgraph_msgs_generate_messages_nodejs"
-	@echo "... rosgraph_msgs_generate_messages_eus"
-	@echo "... roscpp_generate_messages_py"
-	@echo "... mavros_msgs_generate_messages_cpp"
-	@echo "... offb_node"
-	@echo "... std_msgs_generate_messages_cpp"
-	@echo "... sensor_msgs_generate_messages_eus"
-	@echo "... std_msgs_generate_messages_py"
-	@echo "... geometry_msgs_generate_messages_nodejs"
-	@echo "... uuid_msgs_generate_messages_nodejs"
-	@echo "... std_msgs_generate_messages_nodejs"
-	@echo "... geometry_msgs_generate_messages_py"
-	@echo "... sensor_msgs_generate_messages_cpp"
-	@echo "... waypoint_navigation_genlisp"
-	@echo "... mavros_msgs_generate_messages_lisp"
-	@echo "... sensor_msgs_generate_messages_lisp"
+	@echo "... install/local"
+	@echo "... rebuild_cache"
+	@echo "... waypoint_navigation_genpy"
 	@echo "... waypoint_navigation_gennodejs"
-	@echo "... sensor_msgs_generate_messages_py"
+	@echo "... waypoint_navigation_generate_messages_nodejs"
+	@echo "... geographic_msgs_generate_messages_cpp"
 	@echo "... geographic_msgs_generate_messages_eus"
-	@echo "... geographic_msgs_generate_messages_nodejs"
-	@echo "... uuid_msgs_generate_messages_cpp"
-	@echo "... uuid_msgs_generate_messages_eus"
+	@echo "... list_install_components"
+	@echo "... offb_node"
+	@echo "... mavros_msgs_generate_messages_cpp"
 	@echo "... uuid_msgs_generate_messages_lisp"
 	@echo "... waypoint_navigation_generate_messages_lisp"
+	@echo "... geographic_msgs_generate_messages_nodejs"
+	@echo "... mavros_msgs_generate_messages_lisp"
+	@echo "... waypoint_navigation_genlisp"
+	@echo "... mavros_msgs_generate_messages_eus"
+	@echo "... uuid_msgs_generate_messages_nodejs"
+	@echo "... edit_cache"
 	@echo "... uuid_msgs_generate_messages_py"
-	@echo "... waypoint_navigation_generate_messages_cpp"
-	@echo "... roscpp_generate_messages_lisp"
-	@echo "... waypoint_navigation_gencpp"
+	@echo "... geographic_msgs_generate_messages_py"
+	@echo "... install/strip"
+	@echo "... waypoint_navigation_generate_messages_py"
+	@echo "... mavros_msgs_generate_messages_py"
+	@echo "... uuid_msgs_generate_messages_cpp"
+	@echo "... waypoint_navigation_generate_messages_eus"
+	@echo "... uuid_msgs_generate_messages_eus"
 	@echo "... waypoint_navigation_geneus"
+	@echo "... geographic_msgs_generate_messages_lisp"
+	@echo "... mavros_msgs_generate_messages_nodejs"
+	@echo "... waypoint_navigation_generate_messages"
+	@echo "... waypoint_navigation_generate_messages_cpp"
+	@echo "... waypoint_navigation_gencpp"
 	@echo "... src/offb_node.o"
 	@echo "... src/offb_node.i"
 	@echo "... src/offb_node.s"
