@@ -1,6 +1,6 @@
-## project_ws
+# project_ws
 
-# Tree of folder:
+## Tree of folders
 
 * HOME (`.bashrc` => look at "my_bashrc.txt")
 * * project_ws (=> clone this repository)
