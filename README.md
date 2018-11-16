@@ -2,11 +2,11 @@
 
 # Tree of folder:
 
-HOME (.bashrc => look at "my_bashrc.txt")
-* project_ws (=> clone this repository)
-* Firmware (=> See instruction below)
-* src
-* * sitl_gazebo
+* HOME (`.bashrc` => look at "my_bashrc.txt")
+* * project_ws (=> clone this repository)
+* * Firmware (=> See instruction below)
+* * src
+* * * sitl_gazebo
 
 
 For the Firmware part:
@@ -19,5 +19,5 @@ git checkout v1.8.0
 git submodule update --init --recursive
 ```
 2. If you want to add custome models, put them in 
-Firmware/Tools/sitl_gazebo/models
+`Firmware/Tools/sitl_gazebo/models`
 
