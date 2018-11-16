@@ -1,0 +1,8 @@
+prefix=/home/mpperret/project_ws/install
+
+Name: usb_cam
+Description: Description of usb_cam
+Version: 0.3.6
+Cflags: -I/home/mpperret/project_ws/install/include
+Libs: -L/home/mpperret/project_ws/install/lib -lusb_cam
+Requires: 

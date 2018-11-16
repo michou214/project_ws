@@ -119,6 +119,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/mpperret/project_ws/build/gtest/cmake_install.cmake")
   include("/home/mpperret/project_ws/build/apriltags_ros/apriltags/cmake_install.cmake")
   include("/home/mpperret/project_ws/build/apriltags_ros/apriltags_ros/cmake_install.cmake")
+  include("/home/mpperret/project_ws/build/usb_cam/cmake_install.cmake")
   include("/home/mpperret/project_ws/build/waypoint_navigation/cmake_install.cmake")
 
 endif()

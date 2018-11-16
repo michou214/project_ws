@@ -1,0 +1,8 @@
+prefix=/home/mpperret/project_ws/install
+
+Name: jpeg_streamer
+Description: Description of jpeg_streamer
+Version: 0.2.7
+Cflags: 
+Libs: -L/home/mpperret/project_ws/install/lib 
+Requires: 
