@@ -22,7 +22,7 @@ git submodule update --init --recursive
 `Firmware/Tools/sitl_gazebo/models`
 
 ## To be done [16.11.18]
-- [ ] Fix the subscribing problem (1)
+- [X] Fix the subscribing problem (1)
 - [ ] Use AP info to move the drone
 - [ ] Test and debug
 
