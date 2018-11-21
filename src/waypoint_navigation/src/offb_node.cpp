@@ -7,7 +7,7 @@
  * @brief Offboard control example node, written with MAVROS version 0.19.x, PX4 Pro Flight
  * Stack and tested in Gazebo SITL
  */
-/*
+
 #include <eigen3/Eigen/Dense>
 #include <eigen3/Eigen/Sparse> 
 using namespace Eigen;
@@ -34,6 +34,7 @@ using namespace Eigen;
 
 
 // Global variables
+int n_AP=0; //To know how many AP are detected
 mavros_msgs::State          current_state;
 geometry_msgs::PoseStamped  est_local_pos;      // Mavros local pose
 gazebo_msgs::ModelStates    true_local_pos;     // Gazebo true local pose
@@ -65,13 +66,8 @@ ros::Subscriber true_local_pos_sub = nh.subscribe<gazebo_msgs::ModelStates>
 ("gazebo/model_states", 10, true_local_pos_cb);
 
 // The node subscribe to Topic "/tag_detections_pose", 10 msgs in buffer before deleting
-    ros::Subscriber APtag_est_pos_sub = nh.subscribe<geometry_msgs::PoseArray>
-("tag_detections_pose", 10, APtag_est_pos_cb); // with or without the / ????
-
-
-// The node subscribe to Topic "/tag_detections", 10 msgs in buffer before deleting
-//ros::Subscriber APtag_est_pos2_sub = nh.subscribe<apriltags_ros::AprilTagDetectionArray>
-//("/tag_detections", 10, APtag_est_pos2_cb); // with or without the / ????
+ros::Subscriber APtag_est_pos_sub = nh.subscribe<geometry_msgs::PoseArray>
+("tag_detections_pose", 10, APtag_est_pos_cb);
 
     // The node publish the commanded local position        
     ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped>
@@ -179,7 +175,7 @@ ros::Subscriber true_local_pos_sub = nh.subscribe<gazebo_msgs::ModelStates>
             v(0) = true_local_pos.pose[2].position.x;
             v(1) = true_local_pos.pose[2].position.y;
             v(2) = true_local_pos.pose[2].position.z;
-            ROS_INFO("pos_GOAL=[%f, %f, %f]", v(0), v(1), v(2));
+            //ROS_INFO("pos_GOAL=[%f, %f, %f]", v(0), v(1), v(2));
             
             // Current APtag location in vector form.
             //Vector3f appos;
@@ -212,7 +208,7 @@ ros::Subscriber true_local_pos_sub = nh.subscribe<gazebo_msgs::ModelStates>
             }    
             
             // We publish the estimated position
-            ROS_INFO("Boucle en cours");    
+            //ROS_INFO("Boucle en cours");    
             local_pos_pub.publish(conversion_to_msg(goal_pos));
         }
         else
@@ -271,20 +267,16 @@ void true_local_pos_cb(const gazebo_msgs::ModelStates::ConstPtr& true_pos){
 // Callback which will save the estimated local position of the Apriltag
 //geometry_msgs::PoseArray APtag_est_pos;
 void APtag_est_pos_cb(const geometry_msgs::PoseArray::ConstPtr& AP_est_pos){
+    //ROS_INFO("CALLBACK AP");
     APtag_est_pos = *AP_est_pos;
-//    ROS_INFO("APtag est pos=[%f, %f, %f]",  AP_est_pos->poses[2].position.x,
-//                                            AP_est_pos->poses[2].position.y,
-//                                            AP_est_pos->poses[2].position.z);
+    n_AP = AP_est_pos->poses.size();
+    //ROS_INFO("n=%d", n_AP);
+    //if(n_AP>0){  
+    //    ROS_INFO("APtag est pos=[%f, %f, %f]",  AP_est_pos->poses[0].position.x,
+    //                                            AP_est_pos->poses[0].position.y,
+    //                                            AP_est_pos->poses[0].position.z);
+    //}
 }
-
-// Callback which will save the estimated local position of the Apriltag
-//apriltags_ros::AprilTagDetectionArray APtag_est_pos2;
-//void APtag_est_pos2_cb(const apriltags_ros::AprilTagDetectionArray::ConstPtr& AP_est_pos){
-//    APtag_est_pos2 = *AP_est_pos;
-//    ROS_INFO("APtag est pos=[%f, %f, %f]",  AP_est_pos->poses[2].position.x,
-//                                            AP_est_pos->poses[2].position.y,
-//                                            AP_est_pos->poses[2].position.z);
-//}
 
 
 // To check is the drone is at the "right" place
@@ -314,151 +306,3 @@ Vector3f conversion_to_vect(geometry_msgs::PoseStamped a){
     return v;
 }
 
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * @file offb_node.cpp
- * @brief Offboard control example node, written with MAVROS version 0.19.x, PX4 Pro Flight
- * Stack and tested in Gazebo SITL
- */
-
-#include <ros/ros.h>
-#include <geometry_msgs/PoseStamped.h>
-#include <mavros_msgs/CommandBool.h>
-#include <mavros_msgs/SetMode.h>
-#include <mavros_msgs/State.h>
-#include <geometry_msgs/PoseArray.h>        // Tag detection
-
-#include <eigen3/Eigen/Dense>
-#include <eigen3/Eigen/Sparse> 
-using namespace Eigen;
-
-mavros_msgs::State current_state;
-void state_cb(const mavros_msgs::State::ConstPtr& msg){
-    current_state = *msg;
-}
-
-     
-// Callback which will save the estimated local position of the Apriltag
-geometry_msgs::PoseArray APtag_est_pos; // Tag detection
-void APtag_est_pos_cb(const geometry_msgs::PoseArray::ConstPtr& AP_est_pos){
-    APtag_est_pos = *AP_est_pos;
-    ROS_INFO("CALLBACK AP");
-//    ROS_INFO("APtag est pos=[%f, %f, %f]",  AP_est_pos->poses[2].position.x,
-//                                            AP_est_pos->poses[2].position.y,
-//                                            AP_est_pos->poses[2].position.z);
-}
-
-int main(int argc, char **argv)
-{
-    ros::init(argc, argv, "offb_node");
-    ros::NodeHandle nh;
-
-    ros::Subscriber state_sub = nh.subscribe<mavros_msgs::State>
-            ("mavros/state", 10, state_cb);
-    ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped>
-            ("mavros/setpoint_position/local", 10);
-    ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>
-            ("mavros/cmd/arming");
-    ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>
-            ("mavros/set_mode");
-
-// The node subscribe to Topic "/tag_detections_pose", 10 msgs in buffer before deleting
-ros::Subscriber APtag_est_pos_sub = nh.subscribe<geometry_msgs::PoseArray>
-("tag_detections_pose", 10, APtag_est_pos_cb); // with or without the / ????
-
-
-// The node subscribe to Topic "/tag_detections", 10 msgs in buffer before deleting
-//ros::Subscriber APtag_est_pos2_sub = nh.subscribe<apriltags_ros::AprilTagDetectionArray>
-//("/tag_detections", 10, APtag_est_pos2_cb); // with or without the / ????
-
-    //the setpoint publishing rate MUST be faster than 2Hz
-    ros::Rate rate(20.0);
-
-    // wait for FCU connection
-    while(ros::ok() && !current_state.connected){
-        ros::spinOnce();
-        rate.sleep();
-    }
-
-    geometry_msgs::PoseStamped pose;
-    pose.pose.position.x = 0;
-    pose.pose.position.y = 0;
-    pose.pose.position.z = 2;
-
-    //send a few setpoints before starting
-    for(int i = 100; ros::ok() && i > 0; --i){
-        local_pos_pub.publish(pose);
-        ros::spinOnce();
-        rate.sleep();
-    }
-
-    mavros_msgs::SetMode offb_set_mode;
-    offb_set_mode.request.custom_mode = "OFFBOARD";
-
-    mavros_msgs::CommandBool arm_cmd;
-    arm_cmd.request.value = true;
-
-    ros::Time last_request = ros::Time::now();
-
-    while(ros::ok()){
-        if( current_state.mode != "OFFBOARD" &&
-            (ros::Time::now() - last_request > ros::Duration(5.0))){
-            if( set_mode_client.call(offb_set_mode) &&
-                offb_set_mode.response.mode_sent){
-                ROS_INFO("Offboard enabled");
-            }
-            last_request = ros::Time::now();
-        } else {
-            if( !current_state.armed &&
-                (ros::Time::now() - last_request > ros::Duration(5.0))){
-                if( arming_client.call(arm_cmd) &&
-                    arm_cmd.response.success){
-                    ROS_INFO("Vehicle armed");
-                }
-                last_request = ros::Time::now();
-            }
-        }
-
-                
-        // Current APtag location in vector form.
-        //Vector3f AP_pos;
-        //if (count_AP == 0)
-        //    ROS_INFO("No AP detected");
-        //if (count_AP == 1){
-            //AP_pos(0) = APtag_est_pos.poses[2].position.x;
-            //AP_pos(1) = APtag_est_pos.poses[2].position.y;
-            //AP_pos(2) = APtag_est_pos.poses[2].position.z;
-            //ROS_INFO("AP_Pos[%f,%f,%f]", AP_pos(0),AP_pos(1),AP_pos(2));
-        //}    
-        
-        local_pos_pub.publish(pose);
-
-        ros::spinOnce();
-        rate.sleep();
-    }
-
-    return 0;
-}
