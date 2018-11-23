@@ -80,49 +80,6 @@
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
-    <model name='APtag0'>
-      <static>1</static>
-      <link name='robot_link'>
-        <collision name='body_collision'>
-          <geometry>
-            <box>
-              <size>0.2 0.2 0.01</size>
-            </box>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='body_visual'>
-          <geometry>
-            <box>
-              <size>0.2 0.2 0.01</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://APtag0/materials/scripts</uri>
-              <uri>model://APtag0/materials/textures</uri>
-              <name>vrc/repeated0</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-      </link>
-      <pose frame=''>-0.051769 0.04788 0 0 -0 0</pose>
-    </model>
     <model name='APtag1'>
       <static>1</static>
       <link name='robot_link'>

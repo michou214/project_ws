@@ -3347,6 +3347,8 @@ clean: waypoint_navigation/CMakeFiles/geographic_msgs_generate_messages_eus.dir/
 # Target rules for target waypoint_navigation/CMakeFiles/offb_node.dir
 
 # All Build rule for target.
+waypoint_navigation/CMakeFiles/offb_node.dir/all: apriltags_ros/apriltags/CMakeFiles/apriltags.dir/all
+waypoint_navigation/CMakeFiles/offb_node.dir/all: apriltags_ros/apriltags_ros/CMakeFiles/apriltag_detector.dir/all
 waypoint_navigation/CMakeFiles/offb_node.dir/all: waypoint_navigation/CMakeFiles/waypoint_navigation_generate_messages_cpp.dir/all
 	$(MAKE) -f waypoint_navigation/CMakeFiles/offb_node.dir/build.make waypoint_navigation/CMakeFiles/offb_node.dir/depend
 	$(MAKE) -f waypoint_navigation/CMakeFiles/offb_node.dir/build.make waypoint_navigation/CMakeFiles/offb_node.dir/build
@@ -3360,7 +3362,7 @@ all: waypoint_navigation/CMakeFiles/offb_node.dir/all
 
 # Build rule for subdir invocation for target.
 waypoint_navigation/CMakeFiles/offb_node.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/mpperret/project_ws/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/mpperret/project_ws/build/CMakeFiles 21
 	$(MAKE) -f CMakeFiles/Makefile2 waypoint_navigation/CMakeFiles/offb_node.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/mpperret/project_ws/build/CMakeFiles 0
 .PHONY : waypoint_navigation/CMakeFiles/offb_node.dir/rule

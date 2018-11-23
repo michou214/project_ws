@@ -4,5 +4,5 @@ Name: waypoint_navigation
 Description: Description of waypoint_navigation
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/mpperret/project_ws/install/lib 
+Libs: -L/home/mpperret/project_ws/install/lib -lapriltag_detector
 Requires: message_runtime
