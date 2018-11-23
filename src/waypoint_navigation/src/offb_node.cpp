@@ -52,6 +52,7 @@ int n_AP = 0; //To know how many AP are detected
 int n_model=0;
 int AP_id=10;
 
+//bool skip = false;
 bool armed = true;
 bool traj_done = false;
 bool AP_detected  = false;
@@ -144,7 +145,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
     int size_wp   = sizeof(waypoints)/sizeof(waypoints[0]);
     int size_land = sizeof(landing)/sizeof(landing[0]);
 
-    
+    // IMPORTANT TO MENTION
     //send a few setpoints before starting
     for(int i = 50; ros::ok() && i > 0; --i){
         local_pos_pub.publish(conversion_to_msg(pos));
@@ -166,7 +167,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
 
 
     while(ros::ok()){
-        if( current_state.mode != "OFFBOARD" && (ros::Time::now() - last_request > ros::Duration(5.0))){
+        if( curren  != "OFFBOARD" && (ros::Time::now() - last_request > ros::Duration(5.0))){
             if( set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent)
                 ROS_INFO("Offboard enabled");
             last_request = ros::Time::now();
@@ -184,7 +185,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
         pos = conversion_to_vect(est_local_pos);
         //ROS_INFO("Pos =[%f, %f, %f], idx=%d", pos(0),pos(1),pos(2),idx);
 
-        
+        //if(!skip && AP_detected && !AP_verified){
         if(AP_detected && !AP_verified){
             //AP_pos(0) = APtag_est_pos.poses[0].position.x;
             //AP_pos(1) = APtag_est_pos.poses[0].position.y;
@@ -212,6 +213,9 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                 }
                 else
                     ; //ROS_INFO("ID IS WRONG");
+                // Check the statut of takeoff_done
+                // skip = true;    
+                // 
             }
             local_pos_pub.publish(conversion_to_msg(goal_pos));
         }
@@ -250,6 +254,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                 if(takeoff_done){
                     if(AP_verified){
                         if(!landing_in_progress)
+                            // Check the value of goal_pos with calculation
                             goal_pos = landing_on_SP(AP_pos_save, AP_id);
                         if(is_goal_reached(goal_pos, pos, POS_ACCEPT_RAD)){
                              landing_in_progress = true;
