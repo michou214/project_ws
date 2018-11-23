@@ -23,7 +23,9 @@ git submodule update --init --recursive
 
 ## To be done [16.11.18]
 - [X] Fix the subscribing problem (1)
-- [ ] Use AP info to move the drone
+- [X] Use AP info to move the drone
+- [ ] Improve the landing in the center of SP
+- [ ] Add the case where the id is wrong to continue the trajectory
 - [ ] Test and debug
 
 ### Problem (1)
