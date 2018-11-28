@@ -52,7 +52,7 @@ int n_AP = 0; //To know how many AP are detected
 int n_model=0;
 int AP_id=10;
 
-//bool skip = false;
+bool skip  = false;
 bool armed = true;
 bool traj_done = false;
 bool AP_detected  = false;
@@ -129,6 +129,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
     Vector3f takeoff( 0.0f,  0.0f, HEIGHT);
     // To ensure there is no problem for landing, you must set more waypoint than for landing
     // Verify this
+    Vector3f pos00( 1.8f,  1.80f, HEIGHT);
     Vector3f pos0( 2.0f,  2.0f, HEIGHT);
     Vector3f pos1( 2.0f, -2.0f, HEIGHT);
     Vector3f pos2(-2.0f, -2.0f, HEIGHT);
@@ -139,7 +140,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
     Vector3f landing3( 0.0f,  0.0f, 0.0f);
 
 
-    Vector3f waypoints[4] = {pos0, pos1, pos2, pos3};
+    Vector3f waypoints[5] = {pos00, pos0, pos1, pos2, pos3};
     Vector3f   landing[3] = {landing1, landing2, landing3};
     
     int size_wp   = sizeof(waypoints)/sizeof(waypoints[0]);
@@ -185,8 +186,8 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
         pos = conversion_to_vect(est_local_pos);
         //ROS_INFO("Pos =[%f, %f, %f], idx=%d", pos(0),pos(1),pos(2),idx);
 
-        //if(!skip && AP_detected && !AP_verified){
-        if(AP_detected && !AP_verified){
+        if(!skip && AP_detected && !AP_verified){
+        //if(AP_detected && !AP_verified){
             //AP_pos(0) = APtag_est_pos.poses[0].position.x;
             //AP_pos(1) = APtag_est_pos.poses[0].position.y;
             //AP_pos(2) = HEIGHT;
@@ -211,16 +212,15 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                     AP_pos_save = goal_pos;                  
                     // Go to landing
                 }
-                else
-                    ; //ROS_INFO("ID IS WRONG");
-                // Check the statut of takeoff_done
-                // skip = true;    
-                // 
+                else{
+                    ROS_INFO("ID IS WRONG");
+                        if (takeoff_done)
+                            skip = true;
+                }
             }
             local_pos_pub.publish(conversion_to_msg(goal_pos));
         }
-        else
-        {
+        else{
             if(arming_client.call(arm_cmd) && is_goal_reached(goal_pos, pos, POS_ACCEPT_RAD)){
                 if(AP_verified) ;
                 else if(idx==0 && !takeoff_done){
@@ -391,7 +391,11 @@ void APtag_est_pos_cb(const apriltags_ros::AprilTagDetectionArray::ConstPtr& AP_
     n_AP = AP_est_pos->detections.size();
 
     //ROS_INFO("n=%d", n_AP);
-    if(n_AP>0){
+    if (n_AP == 0){
+        skip = false;
+        AP_detected = false;
+    }
+    else{
         AP_id = AP_est_pos->detections[0].id;
         //ROS_INFO("ID=%d", AP_id);
         AP_detected = true;
@@ -400,9 +404,6 @@ void APtag_est_pos_cb(const apriltags_ros::AprilTagDetectionArray::ConstPtr& AP_
             //                                        AP_est_pos->.detections[0].pose.pose.position.y,
             //                                        AP_est_pos->.detections[0].pose.pose.position.z);
     }
-    else
-        AP_detected = false;
-
 }
 
 // To check is the drone is at the "right" place
