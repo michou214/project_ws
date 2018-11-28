@@ -167,7 +167,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
 
 
     while(ros::ok()){
-        if( curren  != "OFFBOARD" && (ros::Time::now() - last_request > ros::Duration(5.0))){
+        if( current_state.mode  != "OFFBOARD" && (ros::Time::now() - last_request > ros::Duration(5.0))){
             if( set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent)
                 ROS_INFO("Offboard enabled");
             last_request = ros::Time::now();
