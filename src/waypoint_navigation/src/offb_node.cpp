@@ -52,7 +52,7 @@ int n_AP = 0; //To know how many AP are detected
 int n_model=0;
 int AP_id=10;
 
-bool skip  = true;
+bool skip  = false;
 bool armed = true;
 bool traj_done = false;
 bool AP_detected  = false;
