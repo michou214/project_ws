@@ -28,10 +28,28 @@ using namespace Eigen;
 #include <poll.h>
 #include <sstream>
 #include <vector>
+#include <cmath>
 
 #include "offb_node.h"
 
+
+
+// Parameters to modify
+// --- Apriltag parameters
 #define DESIRED_ID 2
+// --- Waypoint generation parameters
+#define NB_CYCLE 3
+#define W 1 // Spacing in the trajectory generation, see drawing
+#define L 1 // Spacing in the trajectory generation, see drawing
+#define ALPHA 20 // Every ALPHA[°] you take the point on the Archimed spiral
+#define SQUARE 1
+#define RECT_HORI 2
+#define RECT_VERT 3
+#define SPIRAL 4  // Parameters for the Archimed spiral (a,b) are in WP_generation()
+#define SEARCH_SHAPE SQUARE // Modify to choose the type of search 
+#define HEIGHT 1.5f
+
+// No modification are necessary but you can adjuste as you want
 #define TOL 0.1f
 #define POS_ACCEPT_RAD 0.2f // From Aerial robots
 #define AP_SIZE 0.2f
@@ -42,15 +60,15 @@ using namespace Eigen;
 #define OFFSET_CAM_X 0
 #define OFFSET_CAM_Y 0
 #define SP_SIZE_WIDTH 0.8f  // SP=Solar Panel of size 1.6x0.8[m]
-#define SP_SIZE_LENGTH 1.6f
-#define SP_SIZE_HEIGHT 0.8f
+#define SP_SIZE_LENGTH 1.6f // SP=Solar Panel of size 1.6x0.8[m]
+#define SP_SIZE_HEIGHT 0.8f // SP=Solar Panel of size 1.6x0.8[m]
 
 
 // Global variables
 int idx  = 0; // index to select a point in the list of points 
 int n_AP = 0; //To know how many AP are detected
-int n_model=0;
 int AP_id=10;
+int n_model=0;
 
 bool skip  = false;
 bool armed = true;
@@ -73,7 +91,7 @@ apriltags_ros::AprilTagDetectionArray APtag_est_pos;// Tag detection
 
 int main(int argc, char **argv)
 {
-
+    int size_wp = 0;
 
     // Initialize ROS => where we specify the name of our node
     ros::init(argc, argv, "offb_node");
@@ -119,31 +137,42 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
         rate.sleep();
     }
 
-
+    // Pos variable to be used
     Vector3f pos        (0.0f, 0.0f, 0.0f);
     Vector3f AP_pos     (0.0f, 0.0f, 0.0f);
     Vector3f AP_pos_save(0.0f, 0.0f, 0.0f);
-    Vector3f goal_pos   (5.0f, 5.0f, 5.0f);
-
-    // Waypoint navigation list
+    Vector3f goal_pos   (5.0f, 5.0f, 5.0f); 
+    // Pos variable to be defined
     Vector3f takeoff( 0.0f,  0.0f, HEIGHT);
-    // To ensure there is no problem for landing, you must set more waypoint than for landing
-    // Verify this
-    Vector3f pos00( 1.8f,  1.80f, HEIGHT);
-    Vector3f pos0( 2.0f,  2.0f, HEIGHT);
-    Vector3f pos1( 2.0f, -2.0f, HEIGHT);
-    Vector3f pos2(-2.0f, -2.0f, HEIGHT);
-    Vector3f pos3(-2.0f,  2.0f, HEIGHT);
+    
+    // -------------------------
+    // Waypoint generation
+    // -------------------------
+    if(SEARCH_SHAPE == SQUARE || SEARCH_SHAPE == RECT_HORI || SEARCH_SHAPE == RECT_VERT)
+        size_wp = NB_CYCLE*4+1; // 4 points per cycle + the starting point
+    if(SEARCH_SHAPE == SPIRAL)
+        size_wp = NB_CYCLE*(360/ALPHA)+1; // 360/alpha points per cycle + starting point
 
+    Vector3f waypoints[size_wp];
+    WP_generation(takeoff, NB_CYCLE, W, L, ALPHA, waypoints, size_wp, SEARCH_SHAPE);
+    for(int p=0; p<size_wp; p++)
+        ROS_INFO("WP[%d] =[%f, %f, %f]", p, waypoints[p](0),waypoints[p](1),waypoints[p](2));
+
+    // Verify this
+    /*
+    Vector3f pos0( 1.9f,  1.9f, HEIGHT);
+    Vector3f pos1( 1.9f, -1.9f, HEIGHT);
+    Vector3f pos2(-1.9f, -1.9f, HEIGHT);
+    Vector3f pos3(-1.9f,  1.9f, HEIGHT);
+    Vector3f waypoints[5] = {pos00, pos0, pos1, pos2, pos3};
+    int size_wp   = sizeof(waypoints)/sizeof(waypoints[0]);
+    */
+
+    // To ensure there is no problem for landing, you must set more waypoint than for landing
     Vector3f landing1( 0.0f,  0.0f, HEIGHT/2.0f);
     Vector3f landing2( 0.0f,  0.0f, HEIGHT/5.0f);
     Vector3f landing3( 0.0f,  0.0f, 0.0f);
-
-
-    Vector3f waypoints[5] = {pos00, pos0, pos1, pos2, pos3};
-    Vector3f   landing[3] = {landing1, landing2, landing3};
-    
-    int size_wp   = sizeof(waypoints)/sizeof(waypoints[0]);
+    Vector3f landing[3] = {landing1, landing2, landing3};
     int size_land = sizeof(landing)/sizeof(landing[0]);
 
     // IMPORTANT TO MENTION
@@ -252,6 +281,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
             }
             else{   
                 if(takeoff_done){
+                    ROS_INFO("TAKEOFF DONE");
                     if(AP_verified){
                         if(!landing_in_progress)
                             // Check the value of goal_pos with calculation
@@ -271,7 +301,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                 else                    goal_pos = takeoff;
       
                 Vector3f v = goal_pos;
-                //ROS_INFO("GOAL2=[%f, %f, %f], idx=%d", v(0), v(1), v(2), idx);
+                ROS_INFO("GOAL2=[%f, %f, %f], idx=%d", v(0), v(1), v(2), idx);
                 local_pos_pub.publish(conversion_to_msg(goal_pos));
             }
         }
@@ -287,6 +317,72 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
 
 
 // ------------------------------------------------------------------------------------------------
+void WP_generation(Vector3f p, int cycle, float w, float l, int angle, Vector3f *array, int size, int type){
+    
+    int i = 0; int m = 0;
+    float a = 0.05; float b = 0.005; // Parameters for the spiral, found experimentaly
+    Vector3f P0, P1, P2, P3;
+    Vector4i k; k<<1,2,3,4;
+    Vector4i z; z<<4,4,4,4;
+    array[0]=p;
+
+
+    // ==============================
+    // PROBLEM WITH INDEX
+    // ==============================
+    while(i!=cycle){
+        if(type == SQUARE){
+            ROS_INFO("SQUARE TRAJECTORY");
+            if(i == 0)  P0 << p(0)          , p(1)+(i+1)*w  , p(2);  
+            else        P0 << p(0)-i*l      , p(1)+(i+1)*w  , p(2);
+                        P1 << p(0)+(i+1)*l  , P0(1)         , p(2);
+                        P2 << P1(0)         , p(1)-(i+1)*w  , p(2);
+                        P3 << p(0)-(i+1)*l  , P2(1)         , p(2);
+        }
+        else if (type == RECT_VERT){
+            ROS_INFO("RECT VERT TRAJECTORY");
+            P0 << p(0)+(2*i)*w    , p(1)+l  , p(2);
+            P1 << p(0)+(2*i+1)*w  , P0(1)   , p(2);
+            P2 << P1(0)           , p(1)    , p(2);
+            P3 << p(0)+(2*i+2)*w  , p(1)    , p(2);
+        }
+        else if (type == RECT_HORI){
+            ROS_INFO("RECT HORI TRAJECTORY");
+            P0 << p(0)+l , p(1)+(2*i)*w     , p(2);
+            P1 << P0(0)  , p(1)+(2*i+1)*w   , p(2);
+            P2 << p(0)   , P1(1)            , p(2);
+            P3 << p(0)   , p(1)+(2*i+2)*w   , p(2);
+        }
+        else if (type == SPIRAL){
+            ROS_INFO("SPIRAL TRAJECTORY");
+            float x = (a+b*angle*m)*cos(m*angle*M_PI/180.0f);
+            float y = (a+b*angle*m)*sin(m*angle*M_PI/180.0f);
+            P0 << x, y, p(2);
+        }
+        else{ // Just in case
+            ROS_INFO("DEFAULT TRAJECTORY");
+            P0 <<  1.9f,  1.9f, HEIGHT;
+            P1 <<  1.9f, -1.9f, HEIGHT;
+            P2 << -1.9f, -1.9f, HEIGHT;
+            P3 << -1.9f,  1.9f, HEIGHT;
+        }
+
+        if (type == SPIRAL){
+            if(m % (360/angle) == 0) i++;
+            m++;
+        }
+        else{
+            Vector3f temp[4] = {P0, P1, P2, P3};
+            k = i*z + k;
+            for(int j=0; j<4; j++)
+                array[int(k(j))] = temp[j]; 
+            i++;
+        }
+    }
+}
+
+
+
 Vector3f lands(Vector3f a, float H){
     Vector3f v(0.0f, 0.0f, 0.0f);
     v(0) = a(0);

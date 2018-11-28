@@ -73,6 +73,8 @@ sstream
 -
 vector
 -
+cmath
+-
 offb_node.h
 /home/mpperret/project_ws/src/waypoint_navigation/src/offb_node.h
 

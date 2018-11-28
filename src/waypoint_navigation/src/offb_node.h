@@ -21,6 +21,7 @@ Vector3f to_center_pose(Vector3f real_world, Vector3f camera_world, float offset
 Vector3f landing_on_SP(Vector3f a, int id);
 
 Vector3f lands(Vector3f a, float H);
+void WP_generation(Vector3f p, int cycle, float w, float l, int angle, Vector3f *array, int size, int type);
 
 
 
