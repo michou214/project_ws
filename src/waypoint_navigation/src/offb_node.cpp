@@ -47,7 +47,7 @@ using namespace Eigen;
 #define RECT_VERT 3
 #define SPIRAL 4  // Parameters for the Archimed spiral (a,b) are in WP_generation()
 #define SEARCH_SHAPE SQUARE // Modify to choose the type of search 
-#define HEIGHT 1.5f
+#define HEIGHT 1.75f
 
 // No modification are necessary but you can adjuste as you want
 #define TOL 0.1f
@@ -56,7 +56,6 @@ using namespace Eigen;
 #define AP_POS_ACCEPT 0.1f
 #define AP_POS_ACCEPT_X 0.1f
 #define AP_POS_ACCEPT_Y 0.1f
-#define HEIGHT 1.5f
 #define OFFSET_CAM_X 0
 #define OFFSET_CAM_Y 0
 #define SP_SIZE_WIDTH 0.8f  // SP=Solar Panel of size 1.6x0.8[m]
@@ -78,7 +77,9 @@ bool AP_centered  = false;
 bool AP_verified  = false;
 bool takeoff_done = false;
 bool landing_done = false;
+bool cleaning_done = false;
 bool landing_in_progress = false;
+bool cleaning_in_progress = false;
 
 
 
@@ -144,34 +145,29 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
     Vector3f goal_pos   (5.0f, 5.0f, 5.0f); 
     // Pos variable to be defined
     Vector3f takeoff( 0.0f,  0.0f, HEIGHT);
-    
+    Vector3f cleaning_waypoints[6];;
+
     // -------------------------
     // Waypoint generation
     // -------------------------
     if(SEARCH_SHAPE == SQUARE || SEARCH_SHAPE == RECT_HORI || SEARCH_SHAPE == RECT_VERT)
         size_wp = NB_CYCLE*4+1; // 4 points per cycle + the starting point
     if(SEARCH_SHAPE == SPIRAL)
-        size_wp = NB_CYCLE*(360/ALPHA)+1; // 360/alpha points per cycle + starting point
-
+        size_wp = ((NB_CYCLE-1)*(360/ALPHA)+1)+1; // 360/alpha points per cycle + starting point
+    
+    //ROS_INFO("Size_wp=%d",size_wp);
     Vector3f waypoints[size_wp];
     WP_generation(takeoff, NB_CYCLE, W, L, ALPHA, waypoints, size_wp, SEARCH_SHAPE);
-    for(int p=0; p<size_wp; p++)
-        ROS_INFO("WP[%d] =[%f, %f, %f]", p, waypoints[p](0),waypoints[p](1),waypoints[p](2));
+    
+    //for(int p=0; p<size_wp; p++)
+    //    ROS_INFO("WP[%d] =[%f, %f, %f]", p, waypoints[p](0),waypoints[p](1),waypoints[p](2));
 
-    // Verify this
-    /*
-    Vector3f pos0( 1.9f,  1.9f, HEIGHT);
-    Vector3f pos1( 1.9f, -1.9f, HEIGHT);
-    Vector3f pos2(-1.9f, -1.9f, HEIGHT);
-    Vector3f pos3(-1.9f,  1.9f, HEIGHT);
-    Vector3f waypoints[5] = {pos00, pos0, pos1, pos2, pos3};
-    int size_wp   = sizeof(waypoints)/sizeof(waypoints[0]);
-    */
+
 
     // To ensure there is no problem for landing, you must set more waypoint than for landing
     Vector3f landing1( 0.0f,  0.0f, HEIGHT/2.0f);
-    Vector3f landing2( 0.0f,  0.0f, HEIGHT/5.0f);
-    Vector3f landing3( 0.0f,  0.0f, 0.0f);
+    Vector3f landing2( 0.0f,  0.0f,  0.0f);
+    Vector3f landing3( 0.0f,  0.0f, -0.2f);
     Vector3f landing[3] = {landing1, landing2, landing3};
     int size_land = sizeof(landing)/sizeof(landing[0]);
 
@@ -213,48 +209,40 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
 
         // Current location in vector form.
         pos = conversion_to_vect(est_local_pos);
-        //ROS_INFO("Pos =[%f, %f, %f], idx=%d", pos(0),pos(1),pos(2),idx);
 
         if(!skip && AP_detected && !AP_verified){
-        //if(AP_detected && !AP_verified){
-            //AP_pos(0) = APtag_est_pos.poses[0].position.x;
-            //AP_pos(1) = APtag_est_pos.poses[0].position.y;
-            //AP_pos(2) = HEIGHT;
+
             AP_pos(0) = APtag_est_pos.detections[0].pose.pose.position.x;
             AP_pos(1) = APtag_est_pos.detections[0].pose.pose.position.y;
             AP_pos(2) = HEIGHT;
-            //AP_pos(2) = APtag_est_pos.poses[0].position.z;
 
             goal_pos = to_center_pose(pos, AP_pos, OFFSET_CAM_X, OFFSET_CAM_Y);
 
-            //ROS_INFO("AP  =[%f, %f, %f]", AP_pos(0),AP_pos(1),AP_pos(2));
-            //ROS_INFO("Pos =[%f, %f, %f]", pos(0),pos(1),pos(2));
-            //ROS_INFO("Goal=[%f, %f, %f]", goal_pos(0),goal_pos(1),goal_pos(2));
-            //if(n_model>0)
-            //ROS_INFO("TLP =[%f, %f, %f]", true_local_pos.pose[5].position.x,true_local_pos.pose[5].position.y,true_local_pos.pose[5].position.z);
-
             if(is_AP_centered(AP_pos, AP_POS_ACCEPT_X, AP_POS_ACCEPT_Y)){
-                //ROS_INFO("YEAH YOUR CENTERED");
                 if(check_id(DESIRED_ID)){
-                    ROS_INFO("ID IS GOOD");
                     AP_verified = true;
-                    AP_pos_save = goal_pos;                  
-                    // Go to landing
+                    AP_pos_save = goal_pos; 
+                    cleaning_path(AP_pos_save, cleaning_waypoints, AP_id);
                 }
-                else{
-                    ROS_INFO("ID IS WRONG");
-                        if (takeoff_done)
-                            skip = true;
-                }
+                else
+                    if (takeoff_done)
+                        skip = true;
             }
             local_pos_pub.publish(conversion_to_msg(goal_pos));
         }
         else{
             if(arming_client.call(arm_cmd) && is_goal_reached(goal_pos, pos, POS_ACCEPT_RAD)){
-                if(AP_verified) ;
+                if(AP_verified && !cleaning_in_progress){
+                    idx=0;
+                    cleaning_in_progress = true;
+                } 
                 else if(idx==0 && !takeoff_done){
                     takeoff_done = true;
                     idx = 0; // To reset for waypoints array
+                }
+                else if(takeoff_done && cleaning_done && !landing_in_progress){
+                    traj_done = true;
+                    idx = 0;
                 }
                 else if(takeoff_done && idx == (size_wp-1)){
                     traj_done = true;
@@ -262,46 +250,54 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                 }
                 else if(takeoff_done && traj_done && idx == (size_land-1)){
                     landing_done = true;
-                    current_state.armed = false;
                 }
-                else if( takeoff_done && traj_done && landing_done)
+                else if( takeoff_done && traj_done && landing_done){
                     idx = idx;
+                    ROS_INFO("ICI a la fin ?");
+                }
                 else
                     idx++;
             }
-                
-
-
 
             if(!current_state.armed && landing_done){
                 arm_cmd.request.value = false;
                 // Disarmed drone
-                if( !arming_client.call(arm_cmd) && !arm_cmd.response.success)
-                    ROS_INFO("Vehicle disarmed");
+                ROS_INFO("Vehicle disarmed");
+                //if( !arming_client.call(arm_cmd) && !arm_cmd.response.success)
+                 //   ROS_INFO("Vehicle disarmed");
             }
             else{   
                 if(takeoff_done){
-                    ROS_INFO("TAKEOFF DONE");
-                    if(AP_verified){
-                        if(!landing_in_progress)
-                            // Check the value of goal_pos with calculation
-                            goal_pos = landing_on_SP(AP_pos_save, AP_id);
-                        if(is_goal_reached(goal_pos, pos, POS_ACCEPT_RAD)){
-                             landing_in_progress = true;
-                             goal_pos = lands(pos, SP_SIZE_HEIGHT);
-                             if (fabs(pos(2)-HEIGHT) < TOL)
-                                current_state.armed = false;
-                        }      
-                        //Vector3f v = goal_pos;
-                        //ROS_INFO("GOAL=[%f, %f, %f], idx=%d", v(0), v(1), v(2), idx);
+                    if(traj_done && idx == (size_land-1)){
+                        landing_done = true;
+                        current_state.armed = false;
                     }
-                    else if(traj_done)  goal_pos = landing[idx];
-                    else                goal_pos = waypoints[idx];
+
+                    else if (traj_done && landing_in_progress) 
+                        goal_pos = landing[idx];
+
+                    else if (AP_verified){
+                        if(cleaning_in_progress){
+                            if(idx < 6)
+                                goal_pos = cleaning_waypoints[idx];
+                            else{
+                                cleaning_done = true;
+                                cleaning_in_progress = false;
+                                landing_in_progress = true;
+                                idx = 0;
+                            }
+                        }
+                        if(cleaning_done && is_goal_reached(goal_pos, pos, POS_ACCEPT_RAD))
+                             traj_done = true;  
+                    }
+                    else 
+                        goal_pos = waypoints[idx];
                 }
-                else                    goal_pos = takeoff;
+                else   
+                    goal_pos = takeoff;
       
-                Vector3f v = goal_pos;
-                ROS_INFO("GOAL2=[%f, %f, %f], idx=%d", v(0), v(1), v(2), idx);
+                //Vector3f v = goal_pos;
+                //ROS_INFO("GOAL2=[%f, %f, %f], idx=%d", v(0), v(1), v(2), idx);
                 local_pos_pub.publish(conversion_to_msg(goal_pos));
             }
         }
@@ -317,22 +313,63 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
 
 
 // ------------------------------------------------------------------------------------------------
+void cleaning_path(Vector3f p, Vector3f *array, int id){
+
+    Vector3f P0, P1, P2, P3, P4, P5;
+    float H = SP_SIZE_HEIGHT+0.20f;
+
+    if (id == 0){
+        P0 << p(0)                      , p(1)                  , H;
+        P1 << p(0) +AP_SIZE/2.0f        , p(1)+SP_SIZE_LENGTH   , H;
+        P2 << P1(0)-SP_SIZE_WIDTH/2.0f  , P1(1)                 , H;
+        P3 << P2(0)                     , p(1)-AP_SIZE          , H;
+        P4 << P1(0)-SP_SIZE_WIDTH       , P3(1)                 , H;
+        P5 << P4(0)                     , P1(1)                 , H;
+    }
+    else if (id == 1){
+        P0 << p(0)                      , p(1)                  , H;
+        P1 << p(0)-SP_SIZE_LENGTH       , p(1)-AP_SIZE/2.0f         , H;
+        P2 << P1(0)                     , P1(1)+SP_SIZE_WIDTH/2.0f  , H;
+        P3 << p(0)+AP_SIZE              , P2(1)                     , H;
+        P4 << P3(0)                     , P1(1)+SP_SIZE_WIDTH       , H;
+        P5 << P1(0)                     , P4(1)                     , H;
+    }       
+    else if (id == 2){
+        P0 << p(0)                      , p(1)                  , H;
+        P1 << p(0)+SP_SIZE_LENGTH       , p(1)-AP_SIZE/2.0f         , H;
+        P2 << P1(0)                     , P1(1)+SP_SIZE_WIDTH/2.0f  , H;
+        P3 << p(0)-AP_SIZE              , P2(1)                     , H;
+        P4 << P3(0)                     , P1(1)+SP_SIZE_WIDTH       , H;
+        P5 << P1(0)                     , P4(1)                     , H;
+    }
+    else{ // Just in case
+        P0 << 0.0f, 0.0f, HEIGHT;
+        P1 << 0.0f, 0.0f, HEIGHT;
+        P2 << 0.0f, 0.0f, HEIGHT/2.0f;
+        P3 << 0.0f, 0.0f, HEIGHT/2.0f;
+        P4 << 0.0f, 0.0f, 0.0f;
+        P5 << 0.0f, 0.0f, 0.0f;
+    }
+
+    Vector3f temp[6] = {P0, P1, P2, P3, P4, P5};
+    for(int p=0; p<6; p++)
+        array[p] = temp[p];
+}   
+
+
 void WP_generation(Vector3f p, int cycle, float w, float l, int angle, Vector3f *array, int size, int type){
     
     int i = 0; int m = 0;
     float a = 0.05; float b = 0.005; // Parameters for the spiral, found experimentaly
     Vector3f P0, P1, P2, P3;
-    Vector4i k; k<<1,2,3,4;
-    Vector4i z; z<<4,4,4,4;
+    Vector4i k; k << 1,2,3,4;
+    Vector4i z; z << 4,4,4,4;
+    Vector4i k_modif; k_modif << 0,0,0,0;
     array[0]=p;
 
-
-    // ==============================
-    // PROBLEM WITH INDEX
-    // ==============================
     while(i!=cycle){
         if(type == SQUARE){
-            ROS_INFO("SQUARE TRAJECTORY");
+            //ROS_INFO("SQUARE TRAJECTORY %d",i);
             if(i == 0)  P0 << p(0)          , p(1)+(i+1)*w  , p(2);  
             else        P0 << p(0)-i*l      , p(1)+(i+1)*w  , p(2);
                         P1 << p(0)+(i+1)*l  , P0(1)         , p(2);
@@ -340,27 +377,27 @@ void WP_generation(Vector3f p, int cycle, float w, float l, int angle, Vector3f 
                         P3 << p(0)-(i+1)*l  , P2(1)         , p(2);
         }
         else if (type == RECT_VERT){
-            ROS_INFO("RECT VERT TRAJECTORY");
+            //ROS_INFO("RECT VERT TRAJECTORY");
             P0 << p(0)+(2*i)*w    , p(1)+l  , p(2);
             P1 << p(0)+(2*i+1)*w  , P0(1)   , p(2);
             P2 << P1(0)           , p(1)    , p(2);
             P3 << p(0)+(2*i+2)*w  , p(1)    , p(2);
         }
         else if (type == RECT_HORI){
-            ROS_INFO("RECT HORI TRAJECTORY");
+            //ROS_INFO("RECT HORI TRAJECTORY");
             P0 << p(0)+l , p(1)+(2*i)*w     , p(2);
             P1 << P0(0)  , p(1)+(2*i+1)*w   , p(2);
             P2 << p(0)   , P1(1)            , p(2);
             P3 << p(0)   , p(1)+(2*i+2)*w   , p(2);
         }
         else if (type == SPIRAL){
-            ROS_INFO("SPIRAL TRAJECTORY");
+            //ROS_INFO("SPIRAL TRAJECTORY");
             float x = (a+b*angle*m)*cos(m*angle*M_PI/180.0f);
             float y = (a+b*angle*m)*sin(m*angle*M_PI/180.0f);
             P0 << x, y, p(2);
         }
         else{ // Just in case
-            ROS_INFO("DEFAULT TRAJECTORY");
+            //ROS_INFO("DEFAULT TRAJECTORY");
             P0 <<  1.9f,  1.9f, HEIGHT;
             P1 <<  1.9f, -1.9f, HEIGHT;
             P2 << -1.9f, -1.9f, HEIGHT;
@@ -368,14 +405,15 @@ void WP_generation(Vector3f p, int cycle, float w, float l, int angle, Vector3f 
         }
 
         if (type == SPIRAL){
+            array[m+1] = P0;
             if(m % (360/angle) == 0) i++;
             m++;
         }
         else{
             Vector3f temp[4] = {P0, P1, P2, P3};
-            k = i*z + k;
+            k_modif = i*z + k;
             for(int j=0; j<4; j++)
-                array[int(k(j))] = temp[j]; 
+                array[int(k_modif(j))] = temp[j]; 
             i++;
         }
     }
@@ -462,23 +500,6 @@ void true_local_pos_cb(const gazebo_msgs::ModelStates::ConstPtr& true_pos){
     //}
 }
 
-// Callback which will save the estimated local position of the Apriltag
-//geometry_msgs::PoseArray APtag_est_pos;
-//void APtag_est_pos_cb(const geometry_msgs::PoseArray::ConstPtr& AP_est_pos){
-//    APtag_est_pos = *AP_est_pos;
-//    n_AP = AP_est_pos->poses.size();
-//    //ROS_INFO("n=%d", n_AP);
-//    if(n_AP>0){
-//        AP_detected = true;
-//        //AP_in_verification = true;
-//            //ROS_INFO("APtag est pos=[%f, %f, %f]",  AP_est_pos->poses[0].position.x,
-//            //                                        AP_est_pos->poses[0].position.y,
-//            //                                        AP_est_pos->poses[0].position.z);
-//    }
-//    else
-//        AP_detected = false;
-//
-//}
 
 // Callback which will save the estimated local position of the Apriltag
 //geometry_msgs::PoseArray APtag_est_pos;

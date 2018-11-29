@@ -22,6 +22,7 @@ Vector3f landing_on_SP(Vector3f a, int id);
 
 Vector3f lands(Vector3f a, float H);
 void WP_generation(Vector3f p, int cycle, float w, float l, int angle, Vector3f *array, int size, int type);
+void cleaning_path(Vector3f p, Vector3f *array, int id);
 
 
 
