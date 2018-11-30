@@ -46,7 +46,7 @@ using namespace Eigen;
 #define RECT_HORI 2
 #define RECT_VERT 3
 #define SPIRAL 4  // Parameters for the Archimed spiral (a,b) are in WP_generation()
-#define SEARCH_SHAPE SQUARE // Modify to choose the type of search 
+#define SEARCH_SHAPE SPIRAL // Modify to choose the type of search 
 #define HEIGHT 1.75f
 
 // No modification are necessary but you can adjuste as you want
@@ -61,6 +61,7 @@ using namespace Eigen;
 #define SP_SIZE_WIDTH 0.8f  // SP=Solar Panel of size 1.6x0.8[m]
 #define SP_SIZE_LENGTH 1.6f // SP=Solar Panel of size 1.6x0.8[m]
 #define SP_SIZE_HEIGHT 0.8f // SP=Solar Panel of size 1.6x0.8[m]
+#define Z_OFFSET 0.3f
 
 
 // Global variables
@@ -316,7 +317,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
 void cleaning_path(Vector3f p, Vector3f *array, int id){
 
     Vector3f P0, P1, P2, P3, P4, P5;
-    float H = SP_SIZE_HEIGHT+0.20f;
+    float H = SP_SIZE_HEIGHT+Z_OFFSET;
 
     if (id == 0){
         P0 << p(0)                      , p(1)                  , H;
