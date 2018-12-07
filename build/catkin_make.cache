@@ -1,2 +1,2 @@
-apriltags_ros/apriltags:apriltags_ros/apriltags_ros:usb_cam:waypoint_navigation
+apriltags_ros/apriltags:apriltags_ros/apriltags_ros:waypoint_navigation
 -DCATKIN_DEVEL_PREFIX=/home/mpperret/project_ws/devel -DCMAKE_INSTALL_PREFIX=/home/mpperret/project_ws/install -G Unix Makefiles

@@ -20,7 +20,7 @@ using namespace Eigen;
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
-#include <gazebo_msgs/ModelStates.h>
+//#include <gazebo_msgs/ModelStates.h>
 #include <apriltags_ros/AprilTagDetectionArray.h>
 
 
@@ -108,8 +108,8 @@ ros::Subscriber est_local_pos_sub = nh.subscribe<geometry_msgs::PoseStamped>
 ("mavros/local_position/pose", 10, est_local_pos_cb);
 
 // The node subscribe to Topic "gazebo/model_states", 10 msgs in buffer before deleting
-ros::Subscriber true_local_pos_sub = nh.subscribe<gazebo_msgs::ModelStates>
-("gazebo/model_states", 10, true_local_pos_cb);
+//ros::Subscriber true_local_pos_sub = nh.subscribe<gazebo_msgs::ModelStates>
+//("gazebo/model_states", 10, true_local_pos_cb);
 
 // The node subscribe to Topic "/tag_detections_pose", 10 msgs in buffer before deleting
 //ros::Subscriber APtag_est_pos_sub = nh.subscribe<geometry_msgs::PoseArray>
@@ -491,15 +491,15 @@ void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos){
 
 // Callback which will save the estimated local position of the autopilot
 //gazebo_msgs::ModelStates true_local_pos;
-void true_local_pos_cb(const gazebo_msgs::ModelStates::ConstPtr& true_pos){
-    true_local_pos = *true_pos;
-    n_model = true_pos->pose.size();
+//void true_local_pos_cb(const gazebo_msgs::ModelStates::ConstPtr& true_pos){
+//   true_local_pos = *true_pos;
+//   n_model = true_pos->pose.size();
     //if(n_model>0){
     //ROS_INFO("TRP =[%f, %f, %f]", true_pos->pose[5].position.x,
     //                              true_pos->pose[5].position.y,
     //                              true_pos->pose[5].position.z);
     //}
-}
+//}
 
 
 // Callback which will save the estimated local position of the Apriltag

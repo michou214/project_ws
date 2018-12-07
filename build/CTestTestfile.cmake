@@ -7,5 +7,4 @@
 subdirs(gtest)
 subdirs(apriltags_ros/apriltags)
 subdirs(apriltags_ros/apriltags_ros)
-subdirs(usb_cam)
 subdirs(waypoint_navigation)
