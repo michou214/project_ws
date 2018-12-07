@@ -6,5 +6,5 @@ CXX_FLAGS =
 
 CXX_DEFINES = -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\"waypoint_navigation\"
 
-CXX_INCLUDES = -I/home/mpperret/project_ws/src/waypoint_navigation/include -I/usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include -I/usr/local/PX4/catkin_ws/src/mavros/mavros_msgs/include -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp 
+CXX_INCLUDES = -I/home/mpperret/project_ws/src/waypoint_navigation/include -I/home/mpperret/project_ws/devel/include -I/home/mpperret/project_ws/src/apriltags_ros/apriltags/include -I/home/mpperret/project_ws/src/apriltags_ros/apriltags_ros/include -I/usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include -I/usr/local/PX4/catkin_ws/src/mavros/mavros_msgs/include -isystem /opt/ros/kinetic/include/opencv-3.3.1-dev -isystem /opt/ros/kinetic/include/opencv-3.3.1-dev/opencv -I/opt/ros/kinetic/include -I/opt/ros/kinetic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/usr/include/eigen3 
 

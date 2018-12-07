@@ -340,6 +340,9 @@ apriltags_SOURCE_DIR:STATIC=/home/mpperret/project_ws/src/apriltags_ros/apriltag
 //Value Computed by CMake
 apriltags_ros_BINARY_DIR:STATIC=/home/mpperret/project_ws/build/apriltags_ros/apriltags_ros
 
+//The directory containing a CMake configuration file for apriltags_ros.
+apriltags_ros_DIR:PATH=/home/mpperret/project_ws/devel/share/apriltags_ros/cmake
+
 //Value Computed by CMake
 apriltags_ros_SOURCE_DIR:STATIC=/home/mpperret/project_ws/src/apriltags_ros/apriltags_ros
 
@@ -450,7 +453,7 @@ jpeg_streamer_BINARY_DIR:STATIC=/home/mpperret/project_ws/build/camera_umd/jpeg_
 jpeg_streamer_SOURCE_DIR:STATIC=/home/mpperret/project_ws/src/camera_umd/jpeg_streamer
 
 //Path to a library.
-lib:FILEPATH=/opt/ros/kinetic/lib/libxmlrpcpp.so
+lib:FILEPATH=/opt/ros/kinetic/lib/libbondcpp.so
 
 //The directory containing a CMake configuration file for mavros_msgs.
 mavros_msgs_DIR:PATH=/usr/local/PX4/catkin_ws/devel/share/mavros_msgs/cmake
@@ -687,7 +690,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=7
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=6
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

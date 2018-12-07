@@ -81,9 +81,12 @@
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
+
+
     <model name='unit_box_0'>
       <pose frame=''>-0.2061 -1.44255 0.5 0 -0 0</pose>
       <link name='link'>
+        
         <inertial>
           <mass>1</mass>
           <inertia>
@@ -95,12 +98,14 @@
             <izz>0.166667</izz>
           </inertia>
         </inertial>
+        
         <collision name='collision'>
           <geometry>
             <box>
               <size>1 1 1</size>
             </box>
           </geometry>
+
           <max_contacts>10</max_contacts>
           <surface>
             <contact>
@@ -115,12 +120,14 @@
             </friction>
           </surface>
         </collision>
+        
         <visual name='visual'>
           <geometry>
             <box>
               <size>1 1 1</size>
             </box>
           </geometry>
+          
           <material>
             <script>
               <name>Gazebo/Grey</name>
@@ -128,11 +135,14 @@
             </script>
           </material>
         </visual>
+        
         <self_collide>0</self_collide>
         <kinematic>0</kinematic>
         <gravity>1</gravity>
       </link>
     </model>
+    
+
     <model name='unit_box_1'>
       <pose frame=''>-4.24185 0.19597 0.5 0 -0 0</pose>
       <link name='link'>
