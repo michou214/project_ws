@@ -21,14 +21,7 @@ git submodule update --init --recursive
 2. If you want to add custome models, put them in 
 `Firmware/Tools/sitl_gazebo/models`
 
-## To be done [16.11.18]
-- [X] Fix the subscribing problem (1)
-- [X] Use AP info to move the drone
-- [ ] Improve the landing in the center of SP
-- [ ] Add the case where the id is wrong to continue the trajectory
-- [ ] Test and debug
+## To be done []
+-  [ ] task1
 
-### Problem (1)
-Understand why the use of the variable `APtag_est_pos` of type `geometry_msgs/PoseArray Message` doesn't work when I try to get access to the position x with:
-* `AP_est_pos->poses[2].position.x` in the callback function where `APtag_est_pos = *AP_est_pos;`)
-* `APtag_est_pos.poses[2].position.x` in the code 
+
