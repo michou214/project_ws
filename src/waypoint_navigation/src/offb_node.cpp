@@ -86,7 +86,7 @@ bool cleaning_in_progress = false;
 
 mavros_msgs::State          current_state;
 geometry_msgs::PoseStamped  est_local_pos;      // Mavros local pose
-gazebo_msgs::ModelStates    true_local_pos;     // Gazebo true local pose
+//gazebo_msgs::ModelStates    true_local_pos;     // Gazebo true local pose
 //geometry_msgs::PoseArray    APtag_est_pos;      // Tag detection
 apriltags_ros::AprilTagDetectionArray APtag_est_pos;// Tag detection
 
