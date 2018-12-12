@@ -1,0 +1,8 @@
+prefix=/home/mpperret/project_ws/install
+
+Name: robot_upstart
+Description: Description of robot_upstart
+Version: 0.3.0
+Cflags: 
+Libs: -L/home/mpperret/project_ws/install/lib 
+Requires: 

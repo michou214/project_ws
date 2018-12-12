@@ -1,5 +1,4 @@
-/* There is the original offb_node at the end => L. 260*/
-
+/* 3 Modes*/
 
 
 /**
@@ -35,6 +34,10 @@ using namespace Eigen;
 
 
 // Parameters to modify
+#define MODE 0
+#define MODE_TL 0      // Take off, stay 5 secondes in the air, lands
+#define MODE_TPL 1      // Take off, go to position [2,2,2], comes back to starting pose, lands
+#define MODE_PROJECT 2  // Do the semester project
 // --- Apriltag parameters
 #define DESIRED_ID 2
 // --- Waypoint generation parameters
@@ -50,18 +53,22 @@ using namespace Eigen;
 #define HEIGHT 1.75f
 
 // No modification are necessary but you can adjuste as you want
+#define LANDING 5
+#define DEFAULT 0
 #define TOL 0.1f
 #define POS_ACCEPT_RAD 0.2f // From Aerial robots
+#define POS_ACCEPT_Z   0.1f
 #define AP_SIZE 0.2f
-#define AP_POS_ACCEPT 0.1f
+#define AP_POS_ACCEPT   0.1f
 #define AP_POS_ACCEPT_X 0.1f
 #define AP_POS_ACCEPT_Y 0.1f
 #define OFFSET_CAM_X 0
 #define OFFSET_CAM_Y 0
-#define SP_SIZE_WIDTH 0.8f  // SP=Solar Panel of size 1.6x0.8[m]
+#define SP_SIZE_WIDTH  0.8f  // SP=Solar Panel of size 1.6x0.8[m]
 #define SP_SIZE_LENGTH 1.6f // SP=Solar Panel of size 1.6x0.8[m]
 #define SP_SIZE_HEIGHT 0.8f // SP=Solar Panel of size 1.6x0.8[m]
 #define Z_OFFSET 0.3f
+#define SIZE_CLEAN_WP 6
 
 
 // Global variables
@@ -70,6 +77,8 @@ int n_AP = 0; //To know how many AP are detected
 int AP_id=10;
 int n_model=0;
 
+bool chrono_start = false;
+bool stop  = false;
 bool skip  = false;
 bool armed = true;
 bool traj_done = false;
@@ -139,38 +148,64 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
         rate.sleep();
     }
 
-    // Pos variable to be used
+
     Vector3f pos        (0.0f, 0.0f, 0.0f);
+    Vector3f goal_pos   (5.0f, 5.0f, 5.0f); 
+    Vector3f takeoff    (0.0f, 0.0f, HEIGHT);
     Vector3f AP_pos     (0.0f, 0.0f, 0.0f);
     Vector3f AP_pos_save(0.0f, 0.0f, 0.0f);
-    Vector3f goal_pos   (5.0f, 5.0f, 5.0f); 
-    // Pos variable to be defined
-    Vector3f takeoff( 0.0f,  0.0f, HEIGHT);
-    Vector3f cleaning_waypoints[6];;
+    Vector3f cleaning_waypoints[SIZE_CLEAN_WP];
+
 
     // -------------------------
-    // Waypoint generation
+    // Waypoint generation steps
     // -------------------------
-    if(SEARCH_SHAPE == SQUARE || SEARCH_SHAPE == RECT_HORI || SEARCH_SHAPE == RECT_VERT)
-        size_wp = NB_CYCLE*4+1; // 4 points per cycle + the starting point
-    if(SEARCH_SHAPE == SPIRAL)
-        size_wp = ((NB_CYCLE-1)*(360/ALPHA)+1)+1; // 360/alpha points per cycle + starting point
-    
-    //ROS_INFO("Size_wp=%d",size_wp);
+    // Initialization of the number of waypoints = size_wp
+    if(MODE == MODE_PROJECT){
+        if(SEARCH_SHAPE == SQUARE || SEARCH_SHAPE == RECT_HORI || SEARCH_SHAPE == RECT_VERT)
+            size_wp = NB_CYCLE*4+1; // 4 points per cycle + the starting point
+        if(SEARCH_SHAPE == SPIRAL)
+            size_wp = ((NB_CYCLE-1)*(360/ALPHA)+1)+1; // 360/alpha points per cycle + starting point
+        //ROS_INFO("Size_wp=%d",size_wp);
+    }
+    if (MODE == MODE_TPL)
+        size_wp = 3;
+
+    // Creation of the table to store the different positions
     Vector3f waypoints[size_wp];
-    WP_generation(takeoff, NB_CYCLE, W, L, ALPHA, waypoints, size_wp, SEARCH_SHAPE);
-    
-    //for(int p=0; p<size_wp; p++)
-    //    ROS_INFO("WP[%d] =[%f, %f, %f]", p, waypoints[p](0),waypoints[p](1),waypoints[p](2));
+    for(int p=0; p<size_wp; p++){
+        waypoints[p](0) = 0.0f;
+        waypoints[p](1) = 0.0f,
+        waypoints[p](2) = 0.0f;
+    }
 
+
+    // Waypoints generation depending of the MODE
+    if(MODE == MODE_PROJECT) 
+        WP_generation(takeoff, NB_CYCLE, W, L, ALPHA, waypoints, size_wp, SEARCH_SHAPE);
+
+    if(MODE == MODE_TPL)
+        for(int p=0; p<size_wp; p++){
+            waypoints[p](0) =  1.0f + 0.5f*p;
+            waypoints[p](1) = -1.0f + 0.5f*p;
+            waypoints[p](2) = HEIGHT;
+        }
+
+
+    // Display to check
+    for(int p=0; p<size_wp; p++)
+        ROS_INFO("WP[%d] =[%f, %f, %f]", p, waypoints[p](0),waypoints[p](1),waypoints[p](2));
 
 
     // To ensure there is no problem for landing, you must set more waypoint than for landing
-    Vector3f landing1( 0.0f,  0.0f, HEIGHT/2.0f);
-    Vector3f landing2( 0.0f,  0.0f,  0.0f);
-    Vector3f landing3( 0.0f,  0.0f, -0.2f);
-    Vector3f landing[3] = {landing1, landing2, landing3};
+    Vector3f landing1( 0.0f,  0.0f, HEIGHT);
+    Vector3f landing2( 0.0f,  0.0f, -0.15f);
+    Vector3f landing[2] = {landing1, landing2};
     int size_land = sizeof(landing)/sizeof(landing[0]);
+
+    for(int p=0; p<size_land; p++)
+        ROS_INFO("L[%d] =[%f, %f, %f]", p, landing[p](0),landing[p](1),landing[p](2));
+
 
     // IMPORTANT TO MENTION
     //send a few setpoints before starting
@@ -178,7 +213,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
         local_pos_pub.publish(conversion_to_msg(pos));
         ros::spinOnce();
         rate.sleep();
-    }
+    }   
 
     // Create msgs_structure of the type mavros_msgs::SetMode
     mavros_msgs::SetMode offb_set_mode;
@@ -210,6 +245,8 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
 
         // Current location in vector form.
         pos = conversion_to_vect(est_local_pos);
+        //ROS_INFO("POS =[%f, %f, %f]", pos(0), pos(1), pos(2));
+
 
         if(!skip && AP_detected && !AP_verified){
 
@@ -236,10 +273,16 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                 if(AP_verified && !cleaning_in_progress){
                     idx=0;
                     cleaning_in_progress = true;
+                    ROS_INFO("COND 8");
                 } 
                 else if(idx==0 && !takeoff_done){
                     takeoff_done = true;
                     idx = 0; // To reset for waypoints array
+                    if(MODE == MODE_TL){
+                        traj_done = true;
+                        landing_in_progress = true;
+                    }
+                    ROS_INFO("COND 9");
                 }
                 else if(takeoff_done && cleaning_done && !landing_in_progress){
                     traj_done = true;
@@ -248,16 +291,23 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                 else if(takeoff_done && idx == (size_wp-1)){
                     traj_done = true;
                     idx = 0;
+                    landing_in_progress = true;
+                    ROS_INFO("COND 4");
                 }
-                else if(takeoff_done && traj_done && idx == (size_land-1)){
+                else if(takeoff_done && traj_done && idx == size_land){
                     landing_done = true;
+                    ROS_INFO("COND 5");
                 }
                 else if( takeoff_done && traj_done && landing_done){
                     idx = idx;
-                    ROS_INFO("ICI a la fin ?");
+                    ROS_INFO("COND 6");
+                    if(!current_state.armed)
+                        arm_cmd.request.value = false;
                 }
-                else
+                else{
                     idx++;
+                    ROS_INFO("COND 7 idx = %d", idx);
+                }
             }
 
             if(!current_state.armed && landing_done){
@@ -269,19 +319,23 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
             }
             else{   
                 if(takeoff_done){
-                    if(traj_done && idx == (size_land-1)){
+                    if(traj_done && idx == size_land){
+                        ROS_INFO("COND 1");
                         landing_done = true;
                         current_state.armed = false;
                     }
 
-                    else if (traj_done && landing_in_progress) 
+                    else if (traj_done && landing_in_progress){ 
+                        ROS_INFO("COND 2");
                         goal_pos = landing[idx];
+                    }
 
                     else if (AP_verified){
                         if(cleaning_in_progress){
-                            if(idx < 6)
+                            if(idx < SIZE_CLEAN_WP)
                                 goal_pos = cleaning_waypoints[idx];
                             else{
+                                ROS_INFO("COND 3");
                                 cleaning_done = true;
                                 cleaning_in_progress = false;
                                 landing_in_progress = true;
@@ -291,18 +345,22 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                         if(cleaning_done && is_goal_reached(goal_pos, pos, POS_ACCEPT_RAD))
                              traj_done = true;  
                     }
-                    else 
-                        goal_pos = waypoints[idx];
+                    else {
+                        if(MODE == MODE_PROJECT || MODE == MODE_TPL)
+                            goal_pos = waypoints[idx];
+                        Vector3f v = goal_pos;
+                        ROS_INFO("GOAL2=[%f, %f, %f], idx=%d", v(0), v(1), v(2), idx);
+                    }
                 }
-                else   
+                else
                     goal_pos = takeoff;
+
       
-                //Vector3f v = goal_pos;
-                //ROS_INFO("GOAL2=[%f, %f, %f], idx=%d", v(0), v(1), v(2), idx);
+                Vector3f v = goal_pos;
+                ROS_INFO("GOAL1=[%f, %f, %f], idx=%d", v(0), v(1), v(2), idx);
                 local_pos_pub.publish(conversion_to_msg(goal_pos));
             }
         }
-        
         // Needed or your callbacks would never get called
         ros::spinOnce();
         // Sleep for the time remaining to have 10Hz publish rate
@@ -527,7 +585,8 @@ void APtag_est_pos_cb(const apriltags_ros::AprilTagDetectionArray::ConstPtr& AP_
 // To check is the drone is at the "right" place
 bool is_goal_reached(Vector3f a, Vector3f b, float tol)
 {
-    if( (a-b).norm() < tol )   
+
+    if( (a-b).norm() < tol && fabs(a(2)-b(2)) < POS_ACCEPT_Z)   
         return true;
     else                            
         return false;

@@ -5,7 +5,6 @@ waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /home/mpperret
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /home/mpperret/project_ws/devel/include/apriltags_ros/AprilTagDetectionArray.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /home/mpperret/project_ws/src/waypoint_navigation/src/offb_node.cpp
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /home/mpperret/project_ws/src/waypoint_navigation/src/offb_node.h
-waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/gazebo_msgs/ModelStates.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/geometry_msgs/Point.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/geometry_msgs/Pose.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/geometry_msgs/PoseArray.h
@@ -13,7 +12,6 @@ waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinet
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/geometry_msgs/Quaternion.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/geometry_msgs/Transform.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/geometry_msgs/TransformStamped.h
-waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/geometry_msgs/Twist.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/geometry_msgs/Vector3.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/ros/advertise_options.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/ros/advertise_service_options.h

@@ -8,7 +8,7 @@ using namespace Eigen;
 
 void state_cb(const mavros_msgs::State::ConstPtr& msg);
 void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos);
-void true_local_pos_cb(const gazebo_msgs::ModelStates::ConstPtr& true_pos);
+//void true_local_pos_cb(const gazebo_msgs::ModelStates::ConstPtr& true_pos);
 //void APtag_est_pos_cb(const geometry_msgs::PoseArray::ConstPtr& AP_est_pos);
 void APtag_est_pos_cb(const apriltags_ros::AprilTagDetectionArray::ConstPtr& AP_est_pos);
 bool is_goal_reached(Vector3f a, Vector3f b, float tol);
