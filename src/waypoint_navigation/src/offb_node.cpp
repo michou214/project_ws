@@ -193,8 +193,8 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
 
 
     // Display to check
-    for(int p=0; p<size_wp; p++)
-        ROS_INFO("WP[%d] =[%f, %f, %f]", p, waypoints[p](0),waypoints[p](1),waypoints[p](2));
+    //for(int p=0; p<size_wp; p++)
+        //ROS_INFO("WP[%d] =[%f, %f, %f]", p, waypoints[p](0),waypoints[p](1),waypoints[p](2));
 
 
     // To ensure there is no problem for landing, you must set more waypoint than for landing
@@ -203,8 +203,8 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
     Vector3f landing[2] = {landing1, landing2};
     int size_land = sizeof(landing)/sizeof(landing[0]);
 
-    for(int p=0; p<size_land; p++)
-        ROS_INFO("L[%d] =[%f, %f, %f]", p, landing[p](0),landing[p](1),landing[p](2));
+    //for(int p=0; p<size_land; p++)
+        //ROS_INFO("L[%d] =[%f, %f, %f]", p, landing[p](0),landing[p](1),landing[p](2));
 
 
     // IMPORTANT TO MENTION
@@ -273,7 +273,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                 if(AP_verified && !cleaning_in_progress){
                     idx=0;
                     cleaning_in_progress = true;
-                    ROS_INFO("COND 8");
+                    //ROS_INFO("COND 8");
                 } 
                 else if(idx==0 && !takeoff_done){
                     takeoff_done = true;
@@ -282,7 +282,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                         traj_done = true;
                         landing_in_progress = true;
                     }
-                    ROS_INFO("COND 9");
+                    //ROS_INFO("COND 9");
                 }
                 else if(takeoff_done && cleaning_done && !landing_in_progress){
                     traj_done = true;
@@ -292,21 +292,21 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                     traj_done = true;
                     idx = 0;
                     landing_in_progress = true;
-                    ROS_INFO("COND 4");
+                    //ROS_INFO("COND 4");
                 }
                 else if(takeoff_done && traj_done && idx == size_land){
                     landing_done = true;
-                    ROS_INFO("COND 5");
+                    //ROS_INFO("COND 5");
                 }
                 else if( takeoff_done && traj_done && landing_done){
                     idx = idx;
-                    ROS_INFO("COND 6");
+                    //ROS_INFO("COND 6");
                     if(!current_state.armed)
                         arm_cmd.request.value = false;
                 }
                 else{
                     idx++;
-                    ROS_INFO("COND 7 idx = %d", idx);
+                    //ROS_INFO("COND 7 idx = %d", idx);
                 }
             }
 
@@ -320,13 +320,13 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
             else{   
                 if(takeoff_done){
                     if(traj_done && idx == size_land){
-                        ROS_INFO("COND 1");
+                        //ROS_INFO("COND 1");
                         landing_done = true;
                         current_state.armed = false;
                     }
 
                     else if (traj_done && landing_in_progress){ 
-                        ROS_INFO("COND 2");
+                        //ROS_INFO("COND 2");
                         goal_pos = landing[idx];
                     }
 
@@ -335,7 +335,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                             if(idx < SIZE_CLEAN_WP)
                                 goal_pos = cleaning_waypoints[idx];
                             else{
-                                ROS_INFO("COND 3");
+                                //ROS_INFO("COND 3");
                                 cleaning_done = true;
                                 cleaning_in_progress = false;
                                 landing_in_progress = true;
@@ -349,7 +349,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                         if(MODE == MODE_PROJECT || MODE == MODE_TPL)
                             goal_pos = waypoints[idx];
                         Vector3f v = goal_pos;
-                        ROS_INFO("GOAL2=[%f, %f, %f], idx=%d", v(0), v(1), v(2), idx);
+                        //ROS_INFO("GOAL2=[%f, %f, %f], idx=%d", v(0), v(1), v(2), idx);
                     }
                 }
                 else
@@ -357,7 +357,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
 
       
                 Vector3f v = goal_pos;
-                ROS_INFO("GOAL1=[%f, %f, %f], idx=%d", v(0), v(1), v(2), idx);
+                //ROS_INFO("GOAL1=[%f, %f, %f], idx=%d", v(0), v(1), v(2), idx);
                 local_pos_pub.publish(conversion_to_msg(goal_pos));
             }
         }
