@@ -19,7 +19,7 @@ using namespace Eigen;
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
-//#include <gazebo_msgs/ModelStates.h>
+#include <gazebo_msgs/ModelStates.h>
 #include <apriltags_ros/AprilTagDetectionArray.h>
 
 
@@ -34,14 +34,14 @@ using namespace Eigen;
 
 
 // Parameters to modify
-#define MODE 0
-#define MODE_TL 0      // Take off, stay 5 secondes in the air, lands
+#define MODE_TL 0       // Take off, stay 5 secondes in the air, lands
 #define MODE_TPL 1      // Take off, go to position [2,2,2], comes back to starting pose, lands
 #define MODE_PROJECT 2  // Do the semester project
+#define MODE MODE_PROJECT
 // --- Apriltag parameters
 #define DESIRED_ID 2
 // --- Waypoint generation parameters
-#define NB_CYCLE 3
+#define NB_CYCLE 2
 #define W 1 // Spacing in the trajectory generation, see drawing
 #define L 1 // Spacing in the trajectory generation, see drawing
 #define ALPHA 20 // Every ALPHA[°] you take the point on the Archimed spiral
@@ -49,7 +49,7 @@ using namespace Eigen;
 #define RECT_HORI 2
 #define RECT_VERT 3
 #define SPIRAL 4  // Parameters for the Archimed spiral (a,b) are in WP_generation()
-#define SEARCH_SHAPE SPIRAL // Modify to choose the type of search 
+#define SEARCH_SHAPE SQUARE // Modify to choose the type of search 
 #define HEIGHT 1.75f
 
 // No modification are necessary but you can adjuste as you want
@@ -73,7 +73,7 @@ using namespace Eigen;
 
 // Global variables
 int idx  = 0; // index to select a point in the list of points 
-int n_AP = 0; //To know how many AP are detected
+int n_AP = 0; // To know how many AP are detected
 int AP_id=10;
 int n_model=0;
 
@@ -95,7 +95,7 @@ bool cleaning_in_progress = false;
 
 mavros_msgs::State          current_state;
 geometry_msgs::PoseStamped  est_local_pos;      // Mavros local pose
-//gazebo_msgs::ModelStates    true_local_pos;     // Gazebo true local pose
+gazebo_msgs::ModelStates    true_local_pos;     // Gazebo true local pose
 //geometry_msgs::PoseArray    APtag_est_pos;      // Tag detection
 apriltags_ros::AprilTagDetectionArray APtag_est_pos;// Tag detection
 
@@ -117,8 +117,8 @@ ros::Subscriber est_local_pos_sub = nh.subscribe<geometry_msgs::PoseStamped>
 ("mavros/local_position/pose", 10, est_local_pos_cb);
 
 // The node subscribe to Topic "gazebo/model_states", 10 msgs in buffer before deleting
-//ros::Subscriber true_local_pos_sub = nh.subscribe<gazebo_msgs::ModelStates>
-//("gazebo/model_states", 10, true_local_pos_cb);
+ros::Subscriber true_local_pos_sub = nh.subscribe<gazebo_msgs::ModelStates>
+("gazebo/model_states", 10, true_local_pos_cb);
 
 // The node subscribe to Topic "/tag_detections_pose", 10 msgs in buffer before deleting
 //ros::Subscriber APtag_est_pos_sub = nh.subscribe<geometry_msgs::PoseArray>
@@ -549,15 +549,15 @@ void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos){
 
 // Callback which will save the estimated local position of the autopilot
 //gazebo_msgs::ModelStates true_local_pos;
-//void true_local_pos_cb(const gazebo_msgs::ModelStates::ConstPtr& true_pos){
-//   true_local_pos = *true_pos;
-//   n_model = true_pos->pose.size();
+void true_local_pos_cb(const gazebo_msgs::ModelStates::ConstPtr& true_pos){
+   true_local_pos = *true_pos;
+   n_model = true_pos->pose.size();
     //if(n_model>0){
     //ROS_INFO("TRP =[%f, %f, %f]", true_pos->pose[5].position.x,
     //                              true_pos->pose[5].position.y,
     //                              true_pos->pose[5].position.z);
     //}
-//}
+}
 
 
 // Callback which will save the estimated local position of the Apriltag
