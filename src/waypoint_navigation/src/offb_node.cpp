@@ -17,6 +17,7 @@ using namespace Eigen;
 #include <geometry_msgs/TransformStamped.h> // Mavros local pose
 #include <geometry_msgs/PoseArray.h>        // Tag detection
 #include <mavros_msgs/CommandBool.h>
+#include <mavros_msgs/CommandTOL.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
 #include <gazebo_msgs/ModelStates.h>
@@ -166,7 +167,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
             size_wp = NB_CYCLE*4+1; // 4 points per cycle + the starting point
         if(SEARCH_SHAPE == SPIRAL)
             size_wp = ((NB_CYCLE-1)*(360/ALPHA)+1)+1; // 360/alpha points per cycle + starting point
-        //ROS_INFO("Size_wp=%d",size_wp);
+        ROS_INFO("Size_wp=%d",size_wp);
     }
     if (MODE == MODE_TPL)
         size_wp = 3;
@@ -193,8 +194,8 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
 
 
     // Display to check
-    //for(int p=0; p<size_wp; p++)
-        //ROS_INFO("WP[%d] =[%f, %f, %f]", p, waypoints[p](0),waypoints[p](1),waypoints[p](2));
+    for(int p=0; p<size_wp; p++)
+        ROS_INFO("WP[%d] =[%f, %f, %f]", p, waypoints[p](0),waypoints[p](1),waypoints[p](2));
 
 
     // To ensure there is no problem for landing, you must set more waypoint than for landing
@@ -203,13 +204,13 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
     Vector3f landing[2] = {landing1, landing2};
     int size_land = sizeof(landing)/sizeof(landing[0]);
 
-    //for(int p=0; p<size_land; p++)
-        //ROS_INFO("L[%d] =[%f, %f, %f]", p, landing[p](0),landing[p](1),landing[p](2));
+    for(int p=0; p<size_land; p++)
+        ROS_INFO("L[%d] =[%f, %f, %f]", p, landing[p](0),landing[p](1),landing[p](2));
 
 
     // IMPORTANT TO MENTION
     //send a few setpoints before starting
-    for(int i = 50; ros::ok() && i > 0; --i){
+    for(int i = 100; ros::ok() && i > 0; --i){
         local_pos_pub.publish(conversion_to_msg(pos));
         ros::spinOnce();
         rate.sleep();
@@ -218,30 +219,73 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
     // Create msgs_structure of the type mavros_msgs::SetMode
     mavros_msgs::SetMode offb_set_mode;
     // Fix the param 'custom_mode'
+    //offb_set_mode.request.base_mode = 0;
     offb_set_mode.request.custom_mode = "OFFBOARD";
+    if(set_mode_client.call(offb_set_mode)){
+        ROS_INFO("Setmode send ok %d value:", offb_set_mode.response.mode_sent);
+    }else{
+        ROS_INFO("Failed SetMode");
+        return -1;
+    }
+
+    ROS_INFO("PREMIER");
 
     // Create msgs_structure of the type mavros_msgs::CommandBool
     mavros_msgs::CommandBool arm_cmd;
-    arm_cmd.request.value = true;
+    arm_cmd.request.value = true; // Vhc try to arm
+    if(arming_client.call(arm_cmd)){
+        ROS_INFO("ARM send ok %d", arm_cmd.response.success);
+    }else{
+        ROS_INFO("Failed arming or disarming");
+    }
+
+    ROS_INFO("SECOND");
 
     // Get the time info
     ros::Time last_request = ros::Time::now();
 
+    ROS_INFO("FIRST TIME");
+
+    ROS_ERROR("[1] Mode:%s", current_state.mode.c_str());
 
     while(ros::ok()){
-        if( current_state.mode  != "OFFBOARD" && (ros::Time::now() - last_request > ros::Duration(5.0))){
+        
+        ROS_ERROR("[2] Mode:%s", current_state.mode.c_str());
+        
+        if( current_state.mode  == "POSCTL")
+            ROS_ERROR("[3] Mode:%s", current_state.mode.c_str());
+        else if ( current_state.mode  == "ALTCTL")
+            ROS_INFO("LANDING IN PROGRESS Mode:%s", current_state.mode.c_str());
+        else if ( current_state.mode  == "AUTO.LAND")
+            ROS_INFO("LANDING IN PROGRESS Mode:%s", current_state.mode.c_str());
+        else if (current_state.mode  == "AUTO.TAKEOFF")
+            ROS_INFO("TAKEOFF IN PROGRESS Mode:%s", current_state.mode.c_str());
+        else if (current_state.mode  == "MANUAL")
+            ROS_INFO("MANUAL MODE IN PROGRESS Mode:%s", current_state.mode.c_str());
+        else if (current_state.mode  == "ACRO")
+            ROS_INFO("ACRO MODE IN PROGRESS Mode:%s", current_state.mode.c_str());
+        else if (current_state.mode  == "OFFBOARD")
+            ROS_INFO("OFFBOARD MODE IN PROGRESS Mode:%s", current_state.mode.c_str());
+        else{
+            if( !current_state.armed && (ros::Time::now() - last_request > ros::Duration(5.0))){
+                if( arming_client.call(arm_cmd) && arm_cmd.response.success)
+                ROS_INFO("[1] Vehicle armed");
+                last_request = ros::Time::now();
+            }
+        }
+        /*
+        if( current_state.mode  == "OFFBOARD" && (ros::Time::now() - last_request > ros::Duration(50.0))){
             if( set_mode_client.call(offb_set_mode) && offb_set_mode.response.mode_sent)
-                ROS_INFO("Offboard enabled");
+                ROS_INFO("[1] Offboard enabled");
             last_request = ros::Time::now();
         } 
         else{
             if( !current_state.armed && (ros::Time::now() - last_request > ros::Duration(5.0))){
                 if( arming_client.call(arm_cmd) && arm_cmd.response.success)
-                    ROS_INFO("Vehicle armed");
+                    ROS_INFO("[1] Vehicle armed");
                 last_request = ros::Time::now();
             }
-        }
-
+        }*/
 
         // Current location in vector form.
         pos = conversion_to_vect(est_local_pos);
@@ -273,7 +317,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                 if(AP_verified && !cleaning_in_progress){
                     idx=0;
                     cleaning_in_progress = true;
-                    //ROS_INFO("COND 8");
+                    ROS_INFO("COND 1");
                 } 
                 else if(idx==0 && !takeoff_done){
                     takeoff_done = true;
@@ -281,36 +325,41 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
                     if(MODE == MODE_TL){
                         traj_done = true;
                         landing_in_progress = true;
+                        ROS_INFO("COND 2");
                     }
-                    //ROS_INFO("COND 9");
+                    ROS_INFO("COND 3");
                 }
                 else if(takeoff_done && cleaning_done && !landing_in_progress){
                     traj_done = true;
                     idx = 0;
+                    ROS_INFO("COND 4");
                 }
                 else if(takeoff_done && idx == (size_wp-1)){
                     traj_done = true;
                     idx = 0;
                     landing_in_progress = true;
-                    //ROS_INFO("COND 4");
+                    ROS_INFO("COND 5");
                 }
                 else if(takeoff_done && traj_done && idx == size_land){
                     landing_done = true;
-                    //ROS_INFO("COND 5");
+                    ROS_INFO("COND 6");
                 }
                 else if( takeoff_done && traj_done && landing_done){
                     idx = idx;
-                    //ROS_INFO("COND 6");
-                    if(!current_state.armed)
+                    ROS_INFO("COND 7");
+                    if(!current_state.armed){
                         arm_cmd.request.value = false;
+                        ROS_INFO("COND 8");
+                    }
                 }
                 else{
                     idx++;
-                    //ROS_INFO("COND 7 idx = %d", idx);
+                    ROS_INFO("COND 9");
                 }
             }
 
             if(!current_state.armed && landing_done){
+                ROS_INFO("COND 10");
                 arm_cmd.request.value = false;
                 // Disarmed drone
                 ROS_INFO("Vehicle disarmed");
@@ -320,40 +369,54 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
             else{   
                 if(takeoff_done){
                     if(traj_done && idx == size_land){
-                        //ROS_INFO("COND 1");
+                        ROS_INFO("COND 11");
                         landing_done = true;
                         current_state.armed = false;
                     }
 
                     else if (traj_done && landing_in_progress){ 
-                        //ROS_INFO("COND 2");
+                        ROS_INFO("COND 12");
                         goal_pos = landing[idx];
                     }
 
                     else if (AP_verified){
                         if(cleaning_in_progress){
-                            if(idx < SIZE_CLEAN_WP)
+                            if(idx < SIZE_CLEAN_WP){
                                 goal_pos = cleaning_waypoints[idx];
+                                ROS_INFO("COND 13");
+                            }
                             else{
-                                //ROS_INFO("COND 3");
+                                ROS_INFO("COND 14");
                                 cleaning_done = true;
                                 cleaning_in_progress = false;
                                 landing_in_progress = true;
                                 idx = 0;
+                                ROS_INFO("LALALALALALALAALALAL");
+                                offb_set_mode.request.custom_mode = "AUTO.LAND";
+                                // MARCHE MAIS IL FAUT RETOURNER AU CENTRE AVANT
+                                set_mode_client.call(offb_set_mode);
+                                ROS_INFO("BABABABABABABABABABA");
                             }
                         }
-                        if(cleaning_done && is_goal_reached(goal_pos, pos, POS_ACCEPT_RAD))
-                             traj_done = true;  
+                        if(cleaning_done && is_goal_reached(goal_pos, pos, POS_ACCEPT_RAD)){
+                            traj_done = true;  
+                            ROS_INFO("COND 15");
+                        }
                     }
                     else {
-                        if(MODE == MODE_PROJECT || MODE == MODE_TPL)
+                        if(MODE == MODE_PROJECT || MODE == MODE_TPL){
                             goal_pos = waypoints[idx];
+                            ROS_INFO("COND 16");
+                        }
                         Vector3f v = goal_pos;
+                        ROS_INFO("COND 17");
                         //ROS_INFO("GOAL2=[%f, %f, %f], idx=%d", v(0), v(1), v(2), idx);
                     }
                 }
-                else
+                else{
                     goal_pos = takeoff;
+                    ROS_INFO("COND 18");
+                }
 
       
                 Vector3f v = goal_pos;

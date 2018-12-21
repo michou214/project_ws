@@ -79,6 +79,9 @@ waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o
  /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandBool.h
  /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandBoolRequest.h
  /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandBoolResponse.h
+ /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandTOL.h
+ /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandTOLRequest.h
+ /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandTOLResponse.h
  /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/SetMode.h
  /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/SetModeRequest.h
  /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/SetModeResponse.h
