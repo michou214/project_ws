@@ -5,7 +5,6 @@ waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o
  /home/mpperret/project_ws/devel/include/apriltags_ros/AprilTagDetection.h
  /home/mpperret/project_ws/devel/include/apriltags_ros/AprilTagDetectionArray.h
  /home/mpperret/project_ws/src/waypoint_navigation/src/offb_node.cpp
- /home/mpperret/project_ws/src/waypoint_navigation/src/offb_node.h
  /opt/ros/kinetic/include/gazebo_msgs/ModelStates.h
  /opt/ros/kinetic/include/geometry_msgs/Point.h
  /opt/ros/kinetic/include/geometry_msgs/Pose.h
@@ -79,9 +78,6 @@ waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o
  /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandBool.h
  /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandBoolRequest.h
  /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandBoolResponse.h
- /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandTOL.h
- /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandTOLRequest.h
- /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandTOLResponse.h
  /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/SetMode.h
  /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/SetModeRequest.h
  /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/SetModeResponse.h

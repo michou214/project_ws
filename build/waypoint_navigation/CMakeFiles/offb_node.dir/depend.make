@@ -4,7 +4,6 @@
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /home/mpperret/project_ws/devel/include/apriltags_ros/AprilTagDetection.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /home/mpperret/project_ws/devel/include/apriltags_ros/AprilTagDetectionArray.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /home/mpperret/project_ws/src/waypoint_navigation/src/offb_node.cpp
-waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /home/mpperret/project_ws/src/waypoint_navigation/src/offb_node.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/gazebo_msgs/ModelStates.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/geometry_msgs/Point.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinetic/include/geometry_msgs/Pose.h
@@ -78,9 +77,6 @@ waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /opt/ros/kinet
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandBool.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandBoolRequest.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandBoolResponse.h
-waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandTOL.h
-waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandTOLRequest.h
-waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/CommandTOLResponse.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/SetMode.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/SetModeRequest.h
 waypoint_navigation/CMakeFiles/offb_node.dir/src/offb_node.cpp.o: /usr/local/PX4/catkin_ws/devel/.private/mavros_msgs/include/mavros_msgs/SetModeResponse.h

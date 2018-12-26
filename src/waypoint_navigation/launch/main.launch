@@ -14,7 +14,7 @@
     <arg name="vehicle" default="iris"/>
     <!-- <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/empty.world"/> -->
     <!-- <arg name="world" default="/home/mpperret/project_ws/src/waypoint_navigation/world/square_setup_with_4AP.world"/>-->
-    <arg name="world" default="/home/mpperret/project_ws/src/waypoint_navigation/world/solar_panels.world"/>
+    <arg name="world" default="/home/mpperret/project_ws/src/waypoint_navigation/world/solar_panels_final3.world"/>
     <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/$(arg vehicle)/$(arg vehicle).sdf"/>
     <arg name="rcS" default="$(find px4)/posix-configs/SITL/init/$(arg est)/$(arg vehicle)"/>    
     <!-- <arg name="rcS" default="~/.ros/etc/posix-configs/SITL/init/ekf2/iris"/> -->    
