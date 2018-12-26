@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <sdf version='1.6'>
   <world name='default'>
     <light name='sun' type='directional'>
@@ -82,35 +81,35 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <state world_name='default'>
-      <sim_time>21 605000000</sim_time>
-      <real_time>21 715629576</real_time>
-      <wall_time>1545828408 905739585</wall_time>
-      <iterations>21605</iterations>
+      <sim_time>461 648000000</sim_time>
+      <real_time>489 441649065</real_time>
+      <wall_time>1545836516 139370844</wall_time>
+      <iterations>440043</iterations>
       <model name='APtag0'>
-        <pose frame=''>2 2 0.81 0 -0 0</pose>
+        <pose frame=''>-4.29562 2.42975 0.81 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='box'>
-          <pose frame=''>2 2 0.81 0 -0 0</pose>
+          <pose frame=''>-4.29562 2.42975 0.81 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='APtag1'>
-        <pose frame=''>5 -3.4 0.81 0 -0 0</pose>
+        <pose frame=''>-1.10971 3.11376 0.81 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='box'>
-          <pose frame=''>5 -3.4 0.81 0 -0 0</pose>
+          <pose frame=''>-1.10971 3.11376 0.81 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='APtag2'>
-        <pose frame=''>-4.8 -3.4 0.81 0 -0 0</pose>
+        <pose frame=''>-3.89518 -0.712899 0.81 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='box'>
-          <pose frame=''>-4.8 -3.4 0.81 0 -0 0</pose>
+          <pose frame=''>-3.89518 -0.712899 0.81 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -127,30 +126,30 @@
         </link>
       </model>
       <model name='tableX'>
-        <pose frame=''>4.29806 -3.09852 0.4 0 -0 0</pose>
+        <pose frame=''>-1.80769 3.41148 0.4 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>4.29806 -3.09852 0.4 0 -0 0</pose>
+          <pose frame=''>-1.80769 3.41148 0.4 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='tableX_0'>
-        <pose frame=''>-4.09542 -3.09952 0.4 0 -0 0</pose>
+        <pose frame=''>-3.19552 -0.413758 0.4 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>-4.09542 -3.09952 0.4 0 -0 0</pose>
+          <pose frame=''>-3.19552 -0.413758 0.4 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='tabley'>
-        <pose frame=''>1.697 2.703 0.4 0 -0 0</pose>
+        <pose frame=''>-4.59363 3.13349 0.4 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>1.697 2.703 0.4 0 -0 0</pose>
+          <pose frame=''>-4.59363 3.13349 0.4 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -202,7 +201,7 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose frame=''>-10.769 -0.168102 10.4778 -0 0.763645 0.001007</pose>
+        <pose frame=''>-10.9047 -0.200927 9.03692 0 0.688 2.2e-05</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
