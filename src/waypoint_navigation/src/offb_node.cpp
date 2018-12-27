@@ -1,4 +1,4 @@
-/* 3 Modes*/
+/* 3 Modes working well before going back to the drone dome */
 
 
 /**
@@ -36,7 +36,7 @@ using namespace Eigen;
 #define MODE_TL 0       // Take off, stay 5 secondes in the air, lands
 #define MODE_TPL 1      // Take off, go to position [2,2,2], comes back to starting pose, lands
 #define MODE_PROJECT 2  // Do the semester project
-#define MODE MODE_PROJECT
+#define MODE MODE_TPL
 // --- Apriltag parameters
 #define DESIRED_ID 2
 // --- Waypoint generation parameters
@@ -234,7 +234,7 @@ ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectio
 
     // IMPORTANT TO MENTION
     //send a few setpoints before starting
-    for(int i = 50; ros::ok() && i > 0; --i){
+    for(int i = 100; ros::ok() && i > 0; --i){
         local_pos_pub.publish(conversion_to_msg(pos));
         ros::spinOnce();
         rate.sleep();
