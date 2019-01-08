@@ -1,5 +1,7 @@
 /**
- * @file offb_node.cpp
+ * /!\ IMPORTANT /!\ This version is without anything related to the AprilTage detection (all commented)
+ * 
+ * @file offb_node_without_AP.cpp
  * @brief Offboard control example node, written with MAVROS version 0.19.x, PX4 Pro Flight
  * Modified by Michael Perret
  * LIS - Semester project 2018-2019
@@ -13,12 +15,12 @@ using namespace Eigen; // To use matrix and vector representation
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>      // Mavros local pose
 #include <geometry_msgs/TransformStamped.h> // Mavros local pose
-#include <geometry_msgs/PoseArray.h>        // Tag detection
+//#include <geometry_msgs/PoseArray.h>        // Tag detection
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
 //#include <gazebo_msgs/ModelStates.h>  // Only for simulation
-#include <apriltags_ros/AprilTagDetectionArray.h>
+//#include <apriltags_ros/AprilTagDetectionArray.h>
 
 #include "std_msgs/String.h"
 #include <poll.h>
@@ -35,9 +37,9 @@ using namespace Eigen; // To use matrix and vector representation
 #define PROJECT 2  // Takes off, go to the search position, do a search, if right AprilTag found, clean it and lands, otherwise finish search and lands
 #define MODE PROJECT
 // --- Apriltag parameters
-#define DESIRED_ID 2
+//#define DESIRED_ID 2
 // --- Waypoint generation parameters
-#define NB_CYCLE 3
+#define NB_CYCLE 2
 #define W -1.0 // Spacing in the trajectory generation, see drawing /!\ Pay attention to the direction of axis
 #define L 3.0 // Spacing in the trajectory generation, see drawing /!\ Pay attention to the direction of axis
 #define ALPHA 20 // Every ALPHA[°] you take the point on the Archimedean spiral
@@ -52,10 +54,10 @@ using namespace Eigen; // To use matrix and vector representation
 #define POS_ACCEPT_RAD  0.2f    // in [m]
 #define POS_ACCEPT_Z    0.1f    // in [m]
 #define AP_SIZE         0.2f    // in [m]
-#define AP_POS_ACCEPT_X 0.1f    // in [m]
-#define AP_POS_ACCEPT_Y 0.1f    // in [m]
-#define OFFSET_CAM_X    0.0f    // in [m]
-#define OFFSET_CAM_Y    0.0f    // in [m]
+//#define AP_POS_ACCEPT_X 0.1f    // in [m]
+//#define AP_POS_ACCEPT_Y 0.1f    // in [m]
+//#define OFFSET_CAM_X    0.0f    // in [m]
+//#define OFFSET_CAM_Y    0.0f    // in [m]
 #define SP_SIZE_WIDTH   0.8f    // SP=Solar Panel of size 1.6x0.8[m]
 #define SP_SIZE_LENGTH  1.6f    // SP=Solar Panel of size 1.6x0.8[m]
 #define SP_SIZE_HEIGHT  0.8f    // SP=Solar Panel of size 1.6x0.8[m]
@@ -65,17 +67,17 @@ using namespace Eigen; // To use matrix and vector representation
 
 // Global variables
 int idx  = 0; // Index to select a point in the list of points 
-int n_AP = 0; // To know how many AP are detected
-int AP_id=10;
+//int n_AP = 0; // To know how many AP are detected
+//int AP_id=10;
 //int n_model=0; // Only for simulation
 
 bool start = true;
 bool stop  = false;
 bool skip  = false;
 bool traj_done = false;
-bool AP_detected  = false;
-bool AP_centered  = false;
-bool AP_verified  = false;
+//bool AP_detected  = false;
+//bool AP_centered  = false;
+//bool AP_verified  = false;
 bool takeoff_done = false;
 bool landing_done = false;
 bool chrono_start = false;
@@ -88,28 +90,28 @@ bool cleaning_in_progress = false;
 mavros_msgs::State          current_state;
 geometry_msgs::PoseStamped  est_local_pos;      // Mavros local pose
 //gazebo_msgs::ModelStates    true_local_pos;     // Gazebo true local pose
-apriltags_ros::AprilTagDetectionArray APtag_est_pos;// Tag detection
+//apriltags_ros::AprilTagDetectionArray APtag_est_pos;// Tag detection
 
 
 
 // Prototypes of implemented function
 void state_cb(const mavros_msgs::State::ConstPtr& msg);
 void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos);
-void APtag_est_pos_cb(const geometry_msgs::PoseArray::ConstPtr& AP_est_pos);
+//void APtag_est_pos_cb(const geometry_msgs::PoseArray::ConstPtr& AP_est_pos);
 //void true_local_pos_cb(const gazebo_msgs::ModelStates::ConstPtr& true_pos);
-void APtag_est_pos_cb(const apriltags_ros::AprilTagDetectionArray::ConstPtr& AP_est_pos);
+//void APtag_est_pos_cb(const apriltags_ros::AprilTagDetectionArray::ConstPtr& AP_est_pos);
 void cleaning_path(Vector3f p, Vector3f *array, int id);
 void WP_generation(Vector3f p, int cycle, float w, float l, int angle, Vector3f *array, int size, int type);
 
-bool check_id(int id);
-bool is_AP_centered(Vector3f a, float tol_x, float tol_y);
+//bool check_id(int id);
+//bool is_AP_centered(Vector3f a, float tol_x, float tol_y);
 bool is_goal_reached(Vector3f a, Vector3f b, float tol);
-bool is_goal_AP_centered(Vector3f a, Vector3f b, float tol_x, float tol_y);
+//bool is_goal_AP_centered(Vector3f a, Vector3f b, float tol_x, float tol_y);
 
 Vector3f lands(Vector3f a, float H);
 Vector3f landing_on_SP(Vector3f a, int id);
 Vector3f conversion_to_vect(geometry_msgs::PoseStamped a);
-Vector3f to_center_pose(Vector3f real_world, Vector3f camera_world, float offset_x, float offset_y);
+//Vector3f to_center_pose(Vector3f real_world, Vector3f camera_world, float offset_x, float offset_y);
 
 geometry_msgs::PoseStamped conversion_to_msg(Vector3f a);
 
@@ -140,8 +142,8 @@ int main(int argc, char **argv)
     //        ("gazebo/model_states", 10, true_local_pos_cb);
 
     // The node subscribe to Topic "/tag_detections_pose", 10 msgs in buffer before deleting
-    ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectionArray>
-            ("tag_detections", 10, APtag_est_pos_cb);
+    //ros::Subscriber APtag_est_pos_sub = nh.subscribe<apriltags_ros::AprilTagDetectionArray>
+    //        ("tag_detections", 10, APtag_est_pos_cb);
 
     // The node publish the commanded local position        
     ros::Publisher local_pos_pub = nh.advertise<geometry_msgs::PoseStamped>
@@ -169,9 +171,9 @@ int main(int argc, char **argv)
     Vector3f pos        ( 0.0f,  0.0f, 0.0f);
     Vector3f goal_pos   ( 5.0f,  5.0f, 5.0f); 
     Vector3f takeoff    ( 0.0f,  0.0f, HEIGHT);
-    Vector3f search_pos (-3.0f,  3.0f, HEIGHT); 
-    Vector3f AP_pos     ( 0.0f,  0.0f, 0.0f);
-    Vector3f AP_pos_save( 0.0f,  0.0f, 0.0f);
+    Vector3f search_pos (-4.0f,  3.0f, HEIGHT); 
+    //Vector3f AP_pos     ( 0.0f,  0.0f, 0.0f);
+    //Vector3f AP_pos_save( 0.0f,  0.0f, 0.0f);
     Vector3f cleaning_waypoints[SIZE_CLEAN_WP];
 
 
@@ -275,7 +277,7 @@ int main(int argc, char **argv)
             pos = conversion_to_vect(est_local_pos);
             if(DISPLAY) ROS_INFO("POS =[%f, %f, %f]", pos(0), pos(1), pos(2));
 
-
+            /*
             if(!skip && AP_detected && !AP_verified){
 
                 AP_pos(0) = APtag_est_pos.detections[0].pose.pose.position.x;
@@ -298,13 +300,15 @@ int main(int argc, char **argv)
                 local_pos_pub.publish(conversion_to_msg(goal_pos));
             }
             else
-            {
+            {*/
                 if(arming_client.call(arm_cmd) && is_goal_reached(goal_pos, pos, POS_ACCEPT_RAD)){
-                    if(AP_verified && !cleaning_in_progress){
-                        idx=0;
-                        cleaning_in_progress = true;
-                    } 
-                    else if(idx==0 && !takeoff_done){
+                    //if(AP_verified && !cleaning_in_progress){
+                    //if( !cleaning_in_progress){
+                    //    idx=0;
+                    //    cleaning_in_progress = true;
+                    //} 
+                    //else if(idx==0 && !takeoff_done){
+                    if(idx==0 && !takeoff_done){
                         takeoff_done = true;
                         idx = 0; // To reset for waypoints array
 
@@ -319,8 +323,12 @@ int main(int argc, char **argv)
                     }
                     else if(takeoff_done && idx == (size_wp-1)){
                         traj_done = true;
+                        // /!\ Remove the next 2 lines and uncomment the last: (only for the real flight without the camera stuff)
+                        cleaning_in_progress = true;
+                        cleaning_path(goal_pos, cleaning_waypoints, 2); 
                         idx = 0;
-                        landing_in_progress = true;
+                        //landing_in_progress = true;
+                        ROS_INFO("COND 03");
                     }
                     else{
                         idx++;
@@ -343,19 +351,22 @@ int main(int argc, char **argv)
                             stop = true;
                         }
                     }
-                    else if (AP_verified){
+                    //else if (AP_verified){
 
-                        if(cleaning_in_progress){
+                    //if(cleaning_in_progress){
+                    else if(cleaning_in_progress){
                             if(idx < SIZE_CLEAN_WP){
                                 goal_pos = cleaning_waypoints[idx];
+                                ROS_INFO("COND 01");
                             }
                             else{
                                 cleaning_done = true;
                                 cleaning_in_progress = false;
                                 landing_in_progress = true;
                                 idx = 0;
+                                ROS_INFO("COND 02");
                             }
-                        }
+                        //}
 
                         if(cleaning_done && is_goal_reached(goal_pos, pos, POS_ACCEPT_RAD)){
                              traj_done = true;
@@ -379,7 +390,7 @@ int main(int argc, char **argv)
 
                 // Publish the next waypoint
                 local_pos_pub.publish(conversion_to_msg(goal_pos));
-            }
+            //}
 
             // Needed or your callbacks would never get called
             ros::spinOnce();
@@ -540,16 +551,16 @@ Vector3f to_center_pose(Vector3f real_world, Vector3f camera_world, float offset
 }
 
 // To check is the drone is at the centered with the AP
-bool is_AP_centered(Vector3f a, float tol_x, float tol_y){
+/*bool is_AP_centered(Vector3f a, float tol_x, float tol_y){
     if( fabs(a(0)) < tol_x   &&   fabs(a(1)) < tol_y)   return true;
     else                                                return false;                
-} 
+} */
 
 // To check if you found the right id
-bool check_id(int id){
+/*bool check_id(int id){
     if(AP_id == id)     return true;
     else                return false;
-}
+}*/
 
 
 // Callback which will save the current state of the autopilot
@@ -583,7 +594,7 @@ void est_local_pos_cb(const geometry_msgs::PoseStamped::ConstPtr& est_pos){
 
 // Callback which will save the estimated local position of the Apriltag
 //geometry_msgs::PoseArray APtag_est_pos;
-void APtag_est_pos_cb(const apriltags_ros::AprilTagDetectionArray::ConstPtr& AP_est_pos){
+/*void APtag_est_pos_cb(const apriltags_ros::AprilTagDetectionArray::ConstPtr& AP_est_pos){
     APtag_est_pos = *AP_est_pos;
     n_AP = AP_est_pos->detections.size();
 
@@ -601,7 +612,7 @@ void APtag_est_pos_cb(const apriltags_ros::AprilTagDetectionArray::ConstPtr& AP_
             //                                        AP_est_pos->.detections[0].pose.pose.position.y,
             //                                        AP_est_pos->.detections[0].pose.pose.position.z);
     }
-}
+} */
 
 // To check is the drone is at the "right" place
 bool is_goal_reached(Vector3f a, Vector3f b, float tol)
